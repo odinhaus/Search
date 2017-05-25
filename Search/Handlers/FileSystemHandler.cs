@@ -9,6 +9,7 @@ using System.Threading;
 using Microsoft.Owin.FileSystems;
 using Common.IO;
 using System.IO;
+using System.Web;
 
 namespace Suffuz.Handlers
 {
@@ -46,27 +47,7 @@ namespace Suffuz.Handlers
 
         private string GetContentType(IFileInfo fi)
         {
-            var ext = Path.GetExtension(fi.PhysicalPath);
-            switch(ext.ToLower())
-            {
-                case ".html":
-                case ".htm":
-                    return "text/html";
-                case ".png":
-                    return "image/png";
-                case ".jpg":
-                case ".jpeg":
-                    return "image/jpeg";
-                case ".gif":
-                    return "image/gif";
-                case ".pdf":
-                    return "application/pdf";
-                case ".json":
-                    return "application/json";
-                case ".txt":
-                default:
-                    return "text";
-            }
+            return MimeMapping.GetMimeMapping(fi.PhysicalPath);
         }
     }
 }
