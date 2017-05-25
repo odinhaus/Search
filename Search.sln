@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suffuz", "Search\Suffuz.csproj", "{4D7F1470-34F5-4171-A35B-9E9FE3BC2105}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{784C0898-0B9C-4215-A72C-10F62E2C8037}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Web", "Common.Web\Common.Web.csproj", "{B80E196D-B03B-4041-8CA1-0ECD51F90426}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Core", "Data.Core\Data.Core.csproj", "{ED27FBF2-80B4-4495-955E-C09FAD915AF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.ArangoDB", "Data.ArangoDB\Data.ArangoDB.csproj", "{D6D5CEBB-1B1F-46B1-B2D7-17AA26E4041B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1CA195C7-672F-493C-90D6-C4F3D099B9F3}"
+	ProjectSection(SolutionItems) = preProject
+		binaries\HiQPdf.dep = binaries\HiQPdf.dep
+		binaries\HiQPdf.dll = binaries\HiQPdf.dll
+		binaries\HiQPdf.rda = binaries\HiQPdf.rda
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4D7F1470-34F5-4171-A35B-9E9FE3BC2105}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D7F1470-34F5-4171-A35B-9E9FE3BC2105}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D7F1470-34F5-4171-A35B-9E9FE3BC2105}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D7F1470-34F5-4171-A35B-9E9FE3BC2105}.Release|Any CPU.Build.0 = Release|Any CPU
+		{784C0898-0B9C-4215-A72C-10F62E2C8037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{784C0898-0B9C-4215-A72C-10F62E2C8037}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{784C0898-0B9C-4215-A72C-10F62E2C8037}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{784C0898-0B9C-4215-A72C-10F62E2C8037}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B80E196D-B03B-4041-8CA1-0ECD51F90426}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B80E196D-B03B-4041-8CA1-0ECD51F90426}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B80E196D-B03B-4041-8CA1-0ECD51F90426}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B80E196D-B03B-4041-8CA1-0ECD51F90426}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED27FBF2-80B4-4495-955E-C09FAD915AF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED27FBF2-80B4-4495-955E-C09FAD915AF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED27FBF2-80B4-4495-955E-C09FAD915AF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED27FBF2-80B4-4495-955E-C09FAD915AF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6D5CEBB-1B1F-46B1-B2D7-17AA26E4041B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6D5CEBB-1B1F-46B1-B2D7-17AA26E4041B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6D5CEBB-1B1F-46B1-B2D7-17AA26E4041B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6D5CEBB-1B1F-46B1-B2D7-17AA26E4041B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

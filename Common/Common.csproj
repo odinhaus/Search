@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{784C0898-0B9C-4215-A72C-10F62E2C8037}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Common</RootNamespace>
+    <AssemblyName>Common</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Shs.Common.snk.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Altus.Suffūz, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Altus.Suffuz.1.0.20\lib\Altus.Suffūz.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.6.1.7600.16394\lib\net35\Microsoft.IdentityModel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Extensions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=69c3241e6f0468ca, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.2.1.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.Security.3.2.3.0\lib\net45\Mono.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PCLCrypto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d4421c8a4786956c, processorArchitecture=MSIL">
+      <HintPath>..\packages\PCLCrypto.1.0.1.15115\lib\net40-Client\PCLCrypto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="StructureMap, Version=4.3.0.449, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StructureMap.4.4.0\lib\net45\StructureMap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Validation, Version=2.2.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Validation.2.2.8\lib\dotnet\Validation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Application\ApplicationContextAttribute.cs" />
+    <Compile Include="Application\ApplicationContextBase.cs" />
+    <Compile Include="Application\IApplicationContext.cs" />
+    <Compile Include="Application\IAppSource.cs" />
+    <Compile Include="Application\IInstaller.cs" />
+    <Compile Include="Application\ConsoleApplicationContext.cs" />
+    <Compile Include="Application\WpfApplicationContext.cs" />
+    <Compile Include="Auditing\IHttpAuditScopeTokenReader.cs" />
+    <Compile Include="Auditing\IHttpAuditScopeTokenWriter.cs" />
+    <Compile Include="Caching\Cache.cs" />
+    <Compile Include="Collections\CollectionChangingEventArgs.cs" />
+    <Compile Include="Collections\CollectionChangingHandler.cs" />
+    <Compile Include="Collections\Flock.cs" />
+    <Compile Include="Collections\INotifyCollectionChanging.cs" />
+    <Compile Include="Diagnostics\Logger.cs" />
+    <Compile Include="Diagnostics\TextFileTraceListener.cs" />
+    <Compile Include="DI\ContainerMapping.cs" />
+    <Compile Include="DI\ContainerMappings.cs" />
+    <Compile Include="DI\IContainerMapping.cs" />
+    <Compile Include="DI\IContainerMappings.cs" />
+    <Compile Include="DI\PluginAttribute.cs" />
+    <Compile Include="DI\PluginDependency.cs" />
+    <Compile Include="DI\PluginLoader.cs" />
+    <Compile Include="DI\PluginLoaderAttribute.cs" />
+    <Compile Include="DI\CoreAssemblyAttribute.cs" />
+    <Compile Include="DI\PluginAssemblyAtrribute.cs" />
+    <Compile Include="DI\IPluginLoader.cs" />
+    <Compile Include="Application\IInitialize.cs" />
+    <Compile Include="Application\InitializablePlugin.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DI\NoPluginLoader.cs" />
+    <Compile Include="AppContext.cs" />
+    <Compile Include="AppContextChild.cs" />
+    <Compile Include="Application\AppFile.cs" />
+    <Compile Include="Application\DeclaredApplication.cs" />
+    <Compile Include="Configuration\PluginLoaderConfiguration.cs" />
+    <Compile Include="Configuration\CoreAssemblyCollection.cs" />
+    <Compile Include="Configuration\CoreAssemblyElement.cs" />
+    <Compile Include="Configuration\DiscoveryFileCollection.cs" />
+    <Compile Include="Configuration\DiscoveryFileElement.cs" />
+    <Compile Include="Configuration\DiscoveryManifest.cs" />
+    <Compile Include="Configuration\DiscoveryManifestTargetCollection.cs" />
+    <Compile Include="Configuration\DiscoveryPathCollection.cs" />
+    <Compile Include="Configuration\DiscoveryPathElement.cs" />
+    <Compile Include="Configuration\DiscoveryTarget.cs" />
+    <Compile Include="Diagnostics\RollbarEntry.cs" />
+    <Compile Include="DI\IContainer.cs" />
+    <Compile Include="DI\Registry.cs" />
+    <Compile Include="DI\StructureMapContainer.cs" />
+    <Compile Include="AppContextSetup.cs" />
+    <Compile Include="Exceptions\LicensingException.cs" />
+    <Compile Include="Extensions\ByteEx.cs" />
+    <Compile Include="Extensions\HashingEx.cs" />
+    <Compile Include="Extensions\StringEx.cs" />
+    <Compile Include="IO\StreamHelper.cs" />
+    <Compile Include="Licensing\ILicense.cs" />
+    <Compile Include="Licensing\ILicensedPlugin.cs" />
+    <Compile Include="Licensing\ILicensedInstaller.cs" />
+    <Compile Include="Licensing\ILicenseManager.cs" />
+    <Compile Include="Licensing\InstallerPluginAttribute.cs" />
+    <Compile Include="Licensing\LicensedAppInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Licensing\LicensedAppInstallerAttribute.cs" />
+    <Compile Include="Licensing\LicensedPlugin.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Licensing\LicensedInstallerPlugin.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Licensing\LicenseManagerAttribute.cs" />
+    <Compile Include="Licensing\NoLicensedAppInstaller.cs" />
+    <Compile Include="Licensing\NoLicenseManager.cs" />
+    <Compile Include="Licensing\XmlFileLicense.cs" />
+    <Compile Include="Licensing\XmlFileLicenseManager.cs" />
+    <Compile Include="Linq\Distinct.cs" />
+    <Compile Include="Linq\MaxBy.cs" />
+    <Compile Include="Net\IPEndPointEx.cs" />
+    <Compile Include="OWIN\AppBuilderProvider.cs" />
+    <Compile Include="OWIN\OAuthBearerOptionsProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\AnonymousPipeSSOClient.cs" />
+    <Compile Include="Security\AnonymousPipeSSOServer.cs" />
+    <Compile Include="Security\AuthorizeAttribute.cs" />
+    <Compile Include="Security\AuthorizePermission.cs" />
+    <Compile Include="Security\BearerTokenProvider.cs" />
+    <Compile Include="Security\ChangePasswordModel.cs" />
+    <Compile Include="Security\ClaimTypesEx.cs" />
+    <Compile Include="Security\Cryptography\BCrypt.cs" />
+    <Compile Include="Security\Cryptography\CryptoKey.cs" />
+    <Compile Include="Security\CustomKey.cs" />
+    <Compile Include="Security\DataActions.cs" />
+    <Compile Include="Security\Entitlement.cs" />
+    <Compile Include="Security\IAuthenticator.cs" />
+    <Compile Include="Security\ICustomAuthorizationEvaluator.cs" />
+    <Compile Include="Security\ICustomKey.cs" />
+    <Compile Include="Security\IHttpHeaderAuthTokenBuilder.cs" />
+    <Compile Include="Security\IHttpTokenAuthenticator.cs" />
+    <Compile Include="Security\IIdentityProvider.cs" />
+    <Compile Include="Security\IPermissionProvider.cs" />
+    <Compile Include="Security\IProvideSecurityContext.cs" />
+    <Compile Include="Security\ISingleSignonClient.cs" />
+    <Compile Include="Security\ISingleSignonHost.cs" />
+    <Compile Include="Security\LocalStorageTokenStore.cs" />
+    <Compile Include="Security\ITokenProtector.cs" />
+    <Compile Include="Security\ITokenStore.cs" />
+    <Compile Include="Security\NonPersistentTokenStore.cs" />
+    <Compile Include="Security\Permission.cs" />
+    <Compile Include="Security\RijndaelTokenProtector.cs" />
+    <Compile Include="Security\SecurityContext.cs" />
+    <Compile Include="Security\SecurityContextProviderClient.cs" />
+    <Compile Include="Security\SecurityContextProviderBase.cs" />
+    <Compile Include="Security\SecurityContextProviderServer.cs" />
+    <Compile Include="Security\SecurityCrendentials.cs" />
+    <Compile Include="Security\SerializableClaim.cs" />
+    <Compile Include="Security\SHSClientTokenAuthenticator.cs" />
+    <Compile Include="Security\SHSHttpHeaderAuthTokenBuilder.cs" />
+    <Compile Include="Security\SHSIdentity.cs" />
+    <Compile Include="Security\SHSImpersonationPrincipal.cs" />
+    <Compile Include="Security\SHSPrincipal.cs" />
+    <Compile Include="Security\SHSServerTokenAuthenticator.cs" />
+    <Compile Include="Security\TokenProtector.cs" />
+    <Compile Include="Security\TokenResponse.cs" />
+    <Compile Include="Security\Win\ADFSAuthenticator.cs" />
+    <Compile Include="Serialization\Binary\IBinarySerializable.cs" />
+    <Compile Include="Serialization\JsonEx.cs" />
+    <Compile Include="Serialization\Json\ContractResolver.cs" />
+    <Compile Include="Serialization\SerializerBase.cs" />
+    <Compile Include="Serialization\Xml\DeclaredAppSerializer.cs" />
+    <Compile Include="Serialization\Xml\ExpressionSerializer.cs" />
+    <Compile Include="Subscription.cs" />
+    <Compile Include="System\RandomEx.cs" />
+    <Compile Include="Threading\Thread.cs" />
+    <Compile Include="TypeConverters\EnumDescriptionTypeConverter.cs" />
+    <Compile Include="TypeHelper.cs" />
+    <Compile Include="ValueTypesEx.cs" />
+    <Compile Include="Web\ApiClient.cs" />
+    <Compile Include="Web\ApiUris.cs" />
+    <Compile Include="Web\BinaryRequest.cs" />
+    <Compile Include="Web\IApiClient.cs" />
+    <Compile Include="Web\IResolveApiUris.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Shs.Common.snk.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include=".vs\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

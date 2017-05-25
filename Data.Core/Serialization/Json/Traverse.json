@@ -1,0 +1,63 @@
+﻿{
+  "PathFilter": {
+    "Predicate": {
+      "Predicate": {
+        "MemberName": "Username",
+        "Value": "Jane",
+        "NodeType": "EQ"
+      },
+      "NodeType": "PathNodeFilterMember"
+    },
+    "NodeType": "InEdgeNodeFilter",
+    "Parent": {
+      "Predicate": {
+        "NodeType": "And",
+        "Left": {
+          "NodeType": "PathEdgeFilterMember",
+          "Predicate": {
+            "MemberName": "IsEnabled",
+            "Value": true,
+            "NodeType": "EQ"
+          }
+        },
+        "Right": {
+          "Predicate": {
+            "NodeType": "GT",
+            "MemberName": "Age",
+            "Value": 3
+          },
+          "NodeType": "PathNodeFilterMember"
+        }
+      },
+      "NodeType": "OutEdgeNodeFilter",
+      "ModelType": "Identification.Biometric",
+      "EdgeType": "owns",
+      "Parent": { "NodeType": "PathRootFilter" }
+    },
+    "ModelType": "Identification.User",
+    "EdgeType": "Security.canView"
+  },
+  "PathSelector": null,
+  "NodeType": "Traverse",
+  "Origin": {
+    "NodeType": "TraverseOrigin",
+    "Key": "0",
+    "ModelType": "Identification.Patient"
+  }
+}
+
+//    FOR e, v, p in 1..2 ANY 'Patient/43070' Edge
+//    FILTER 
+//    (
+//        p.edges[0].Type == "owns" 
+//        && p.edges[0].TargetType == "Identification.Biometrics" 
+//        && p.edges[0].SourceType == "Identification.Patient"
+//    )
+//    && 
+//    (
+//        p.edges[1].Type == "Security.canView" 
+//        && p.edges[1].SourceType == "Identification.User" 
+//        && p.edges[1].TargetType == "Identification.Biometrics" 
+//        && p.vertices[2].Username == "Jane"
+//    )
+//    RETURN p
