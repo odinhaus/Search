@@ -7,31 +7,31 @@ using System.Threading.Tasks;
 
 namespace Common.Security
 {
-    public class SHSImpersonationPrincipal : SHSPrincipal, IDisposable
+    public class SuffuzImpersonationPrincipal : SuffuzPrincipal, IDisposable
     {
         [ThreadStatic]
-        static List<SHSImpersonationPrincipal> _impersonationStack = new List<SHSImpersonationPrincipal>();
+        static List<SuffuzImpersonationPrincipal> _impersonationStack = new List<SuffuzImpersonationPrincipal>();
 
-        internal static SHSImpersonationPrincipal Impersonate(SHSPrincipal principalToImpersonate)
+        internal static SuffuzImpersonationPrincipal Impersonate(SuffuzPrincipal principalToImpersonate)
         {
-            var imp = new SHSImpersonationPrincipal(principalToImpersonate);
+            var imp = new SuffuzImpersonationPrincipal(principalToImpersonate);
             try
             {
                 _impersonationStack.Insert(0, imp);
             }
             catch (NullReferenceException)
             {
-                _impersonationStack = new List<SHSImpersonationPrincipal>();
+                _impersonationStack = new List<SuffuzImpersonationPrincipal>();
                 _impersonationStack.Insert(0, imp);
             }
             return imp;
         }
 
-        private SHSImpersonationPrincipal(SHSPrincipal principalToImpersonate) : base((IClaimsIdentity)principalToImpersonate.Identity)
+        private SuffuzImpersonationPrincipal(SuffuzPrincipal principalToImpersonate) : base((IClaimsIdentity)principalToImpersonate.Identity)
         {
         }
 
-        internal static SHSPrincipal Current
+        internal static SuffuzPrincipal Current
         {
             get
             {
@@ -41,7 +41,7 @@ namespace Common.Security
                 }
                 catch (NullReferenceException)
                 {
-                    _impersonationStack = new List<SHSImpersonationPrincipal>();
+                    _impersonationStack = new List<SuffuzImpersonationPrincipal>();
                     return null;
                 }
             }

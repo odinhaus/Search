@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Data.Core.Security
 {
     [TypeConverter(typeof(ModelTypeConverter))]
-    [Model("Role", "Security")]
+    [Model("Role")]
     public interface IRole : IModel<long>
     {
         [BinarySerializable(10)]

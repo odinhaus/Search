@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Common.Security
 {
-    public class SHSPrincipal : IClaimsPrincipal
+    public class SuffuzPrincipal : IClaimsPrincipal
     {
-        public SHSPrincipal(IClaimsIdentity identity)
+        public SuffuzPrincipal(IClaimsIdentity identity)
         {
             Identity = identity;
             Identities = new ClaimsIdentityCollection(new IClaimsIdentity[] { identity });
@@ -30,7 +30,7 @@ namespace Common.Security
 
         public IClaimsPrincipal Copy()
         {
-           return new SHSPrincipal(((IClaimsIdentity)this.Identity).Copy());
+           return new SuffuzPrincipal(((IClaimsIdentity)this.Identity).Copy());
         }
 
         public bool IsInRole(string role)

@@ -1040,7 +1040,7 @@ RETURN MERGE(n, {{ _owner: FIRST(owner)}})";
         {
             if (user == null)
             {
-                user = new SHSIdentity(IUserDefaults.UnauthorizedUser, "", false);
+                user = new SuffuzIdentity(IUserDefaults.UnauthorizedUser, "", false);
             }
 
             if (additionalData?.StartsWith("\"") ?? false)

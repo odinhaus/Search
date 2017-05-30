@@ -93,9 +93,9 @@ namespace Data.Core.Security
                                 + "|| @to = @user "
                                 + "|| @from = @user "
                                 + "|| @model.Owner == null "
-                                + "|| Shs_IsMemberOf(@user, @model.Owner) "
-                                + "|| (@modelClass == '" + ModelTypeManager.GetModelName<IOrgUnit>() + "' && Shs_IsMemberOf(@user, @model)) "
-                                + "|| (@modelClass == '" + ModelTypeManager.GetModelName<IRole>() + "' && Shs_IsMemberOf(@user, @model)) "
+                                + "|| IsMemberOf(@user, @model.Owner) "
+                                + "|| (@modelClass == '" + ModelTypeManager.GetModelName<IOrgUnit>() + "' && IsMemberOf(@user, @model)) "
+                                + "|| (@modelClass == '" + ModelTypeManager.GetModelName<IRole>() + "' && IsMemberOf(@user, @model)) "
                                 + "|| (@modelClass == '" + ModelTypeManager.GetModelName<IRule>() + "' && IsOwnedBy(@model, '" + IOrgUnitDefaults.RootOrgUnitName + "')) "
                                 + "|| (@modelClass == '" + ModelTypeManager.GetModelName<owns>() + "' && @from == @rootOrgUnit && @toClass == '" + ModelTypeManager.GetModelName<IRule>() + "')";
             read.UserEvaluator = "IsAuthenticated(@user)";
@@ -122,8 +122,8 @@ namespace Data.Core.Security
             create.Entitlement = Entitlement.Allow;
             create.Actions = DataActions.Create | DataActions.Update | DataActions.Link;
             create.ModelEvaluator = "@model == null || @model.IsNew "
-                                  + "|| (Shs_IsMemberOf(@user, @model.Owner) && (@to == null || @to == @user || Shs_IsMemberOf(@user, @to.Owner)) && (@from == null || @from == @user || Shs_IsMemberOf(@user, @from.Owner))) "
-                                  + "|| (@modelClass == '" + ModelTypeManager.GetModelName<owns>() + "' && Shs_IsMemberOf(@user, @from)) ";
+                                  + "|| (IsMemberOf(@user, @model.Owner) && (@to == null || @to == @user || IsMemberOf(@user, @to.Owner)) && (@from == null || @from == @user || IsMemberOf(@user, @from.Owner))) "
+                                  + "|| (@modelClass == '" + ModelTypeManager.GetModelName<owns>() + "' && IsMemberOf(@user, @from)) ";
             create.UserEvaluator = "IsAuthenticated(@user)";
             rule.Policies.Add(create);
 
@@ -134,7 +134,7 @@ namespace Data.Core.Security
             delete.PolicySelector = "'*'";
             delete.Entitlement = Entitlement.Allow;
             delete.Actions = DataActions.Delete;
-            delete.ModelEvaluator = "Shs_IsMemberOf(@user, @model.Owner) || IsInRole(@user, '" + IRoleDefaults.AdministratorsRoleName + "')";
+            delete.ModelEvaluator = "IsMemberOf(@user, @model.Owner) || IsInRole(@user, '" + IRoleDefaults.AdministratorsRoleName + "')";
             delete.UserEvaluator = "IsAuthenticated(@user)";
             rule.Policies.Add(delete);
 

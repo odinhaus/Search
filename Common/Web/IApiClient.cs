@@ -16,7 +16,7 @@ namespace Common.Web
     public interface IApiClient : IDynamicMetaObjectProvider
     {
         void ReportError(Exception ex, string platform = "ios");
-        SHSPrincipal Authenticate(string username, string password);
+        SuffuzPrincipal Authenticate(string username, string password);
         bool ChangePassword(string currentPassword, string newPassword, out string message);
         T Call<T>(string[] uriSegments, params KeyValuePair<string, object>[] args);
     }

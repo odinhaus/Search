@@ -46,12 +46,12 @@ namespace Common.Web.Handlers
             {
                 Content = new StringContent(JsonConvert.SerializeObject(new
                 {
-                    AuthenticationType = ((SHSIdentity)current.CurrentPrincipal.Identity).AuthenticationType,
-                    BearerToken = ((SHSIdentity)current.CurrentPrincipal.Identity).BearerToken,
-                    CustomerId = ((SHSIdentity)current.CurrentPrincipal.Identity).CustomerId,
-                    IsAuthenticated = ((SHSIdentity)current.CurrentPrincipal.Identity).IsAuthenticated,
-                    Name = ((SHSIdentity)current.CurrentPrincipal.Identity).Name,
-                    Claims = ((SHSIdentity)current.CurrentPrincipal.Identity).Claims.Select(c => new SerializableClaim
+                    AuthenticationType = ((SuffuzIdentity)current.CurrentPrincipal.Identity).AuthenticationType,
+                    BearerToken = ((SuffuzIdentity)current.CurrentPrincipal.Identity).BearerToken,
+                    CustomerId = ((SuffuzIdentity)current.CurrentPrincipal.Identity).CustomerId,
+                    IsAuthenticated = ((SuffuzIdentity)current.CurrentPrincipal.Identity).IsAuthenticated,
+                    Name = ((SuffuzIdentity)current.CurrentPrincipal.Identity).Name,
+                    Claims = ((SuffuzIdentity)current.CurrentPrincipal.Identity).Claims.Select(c => new SerializableClaim
                     {
                         Issuer = c.Issuer,
                         OriginalIssuer = c.OriginalIssuer,

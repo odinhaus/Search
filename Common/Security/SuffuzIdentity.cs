@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace Common.Security
 {
-    public class SHSIdentity : IClaimsIdentity
+    public class SuffuzIdentity : IClaimsIdentity
     {
-        static SHSIdentity()
+        static SuffuzIdentity()
         {
-            var admin = new SHSIdentity("Admin", "Shs", true);
+            var admin = new SuffuzIdentity("Admin", "Suffuz", true);
             admin.Claims.Add(new Claim(ClaimTypes.Role, "Admin", ClaimValueTypes.String, AppContext.Name, AppContext.Name));
             admin.Claims.Add(new Claim(ClaimTypes.NameIdentifier, "Admin", ClaimValueTypes.String, AppContext.Name, AppContext.Name));
             Admin = admin;
         }
 
-        public SHSIdentity(string name, string customerId, bool isAuthenticated)
+        public SuffuzIdentity(string name, string customerId, bool isAuthenticated)
         {
             Name = name;
             IsAuthenticated = isAuthenticated;
@@ -28,7 +28,7 @@ namespace Common.Security
 
         public string AuthenticationType
         {
-            get { return SHSHttpHeaderAuthTokenBuilder.SHS_AUTH; }
+            get { return HttpHeaderAuthTokenBuilder.SUFFUZ_AUTH; }
         }
 
         public bool IsAuthenticated { get; private set; }
@@ -78,7 +78,7 @@ namespace Common.Security
 
         public IClaimsIdentity Copy()
         {
-            var copy = new SHSIdentity(this.Name, this.CustomerId, this.IsAuthenticated)
+            var copy = new SuffuzIdentity(this.Name, this.CustomerId, this.IsAuthenticated)
             {
                 BearerToken = this.BearerToken,
                 Actor = this.Actor,
@@ -97,6 +97,6 @@ namespace Common.Security
             return copy;
         }
 
-        public static readonly SHSIdentity Admin;
+        public static readonly SuffuzIdentity Admin;
     }
 }

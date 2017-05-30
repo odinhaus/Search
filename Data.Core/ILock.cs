@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Data.Core
 {
     [TypeConverter(typeof(ModelTypeConverter))]
-    [Model("lock", "Shs")]
+    [Model("lock")]
     public interface ILock : ILink
     {
         [Searchable]

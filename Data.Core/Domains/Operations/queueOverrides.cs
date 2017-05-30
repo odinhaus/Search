@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Data.Core.Domains.Operations
 {
     [TypeConverter(typeof(ModelTypeConverter))]
-    [Model("queueOverrides", "Shs")]
+    [Model("queueOverrides")]
     public interface queueOverrides : ILink<long>
     {
         [BinarySerializable(10)]

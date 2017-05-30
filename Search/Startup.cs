@@ -13,6 +13,13 @@ using System.Web.Http;
 using Common.Security;
 using Data.Core;
 using Data.Core.Security;
+using Microsoft.Owin.Security.OAuth;
+using Microsoft.Owin.Security.Infrastructure;
+using Microsoft.Owin.Security.DataHandler;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.DataHandler.Serializer;
+using Microsoft.Owin.Security.DataHandler.Encoder;
+using Common.OWIN;
 
 namespace Suffuz
 {
@@ -20,6 +27,25 @@ namespace Suffuz
     {
         public void Configuration(IAppBuilder app)
         {
+            var options = new OAuthBearerAuthenticationOptions()
+            {
+                AuthenticationMode = Microsoft.Owin.Security.AuthenticationMode.Active,
+                Provider = new BearerTokenProvider(),
+                AccessTokenProvider = new AuthenticationTokenProvider()
+                {
+                    OnCreate = c => c.SetToken(c.SerializeTicket()),
+                    OnReceive = c => c.DeserializeTicket(c.Token)
+                },
+                AccessTokenFormat = new SecureDataFormat<AuthenticationTicket>(
+                        new TicketSerializer(),
+                        new RijndaelTokenProtector(), //new DpapiDataProtectionProvider("DF").Create("ASP.NET Identity"),
+                        TextEncodings.Base64Url)
+            };
+
+            app.CreatePerOwinContext(() => new OAuthBearerOptionsProvider(options));
+            app.CreatePerOwinContext(() => new AppBuilderProvider(app));
+
+
             AppContext.Run(createAppContext: false);
 
             var config = new HttpConfiguration();

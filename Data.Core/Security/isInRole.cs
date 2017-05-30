@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Data.Core.Security
 {
     [TypeConverter(typeof(ModelTypeConverter))]
-    [Model("isInRole", "Security")]
+    [Model("isInRole")]
     public interface isInRole : ILink<long>
     {
     }

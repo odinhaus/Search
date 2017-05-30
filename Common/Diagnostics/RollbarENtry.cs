@@ -32,9 +32,9 @@ namespace Common.Diagnostics
             {
                 this.person = new RollbarUser()
                 {
-                    id = ((SHSIdentity)SecurityContext.Current.CurrentPrincipal.Identity).Name,
-                    email = ((SHSIdentity)SecurityContext.Current.CurrentPrincipal.Identity).Name,
-                    username = ((SHSIdentity)SecurityContext.Current.CurrentPrincipal.Identity).Name
+                    id = ((SuffuzIdentity)SecurityContext.Current.CurrentPrincipal.Identity).Name,
+                    email = ((SuffuzIdentity)SecurityContext.Current.CurrentPrincipal.Identity).Name,
+                    username = ((SuffuzIdentity)SecurityContext.Current.CurrentPrincipal.Identity).Name
                 };
             }
             this.title = error.GetType().Name;

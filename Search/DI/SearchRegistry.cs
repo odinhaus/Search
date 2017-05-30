@@ -20,7 +20,7 @@ using Common.Auditing;
 using Data.Core.Security;
 using Data.Core.Evaluation;
 using Data.Core.Auditing;
-using Shs.Search.Security;
+using Search.Security;
 
 namespace Suffuz.DI
 {
@@ -33,8 +33,8 @@ namespace Suffuz.DI
             return new Common.DI.StructureMapContainer(new Container(c =>
             {
                 InitializeModelConverters(c);
-                c.For<IHttpTokenAuthenticator>().Use<SHSServerTokenAuthenticator>();
-                c.For<IHttpHeaderAuthTokenBuilder>().Use<SHSHttpHeaderAuthTokenBuilder>();
+                c.For<IHttpTokenAuthenticator>().Use<ServerTokenAuthenticator>();
+                c.For<IHttpHeaderAuthTokenBuilder>().Use<HttpHeaderAuthTokenBuilder>();
                 c.For<ITokenStore>().Use<NonPersistentTokenStore>();
                 c.For<ILocateHandlers>().Use<SearchHandlerLocator>();
                 c.For<IModelListProviderBuilder>().Use<ArangoProviderBuilder>();

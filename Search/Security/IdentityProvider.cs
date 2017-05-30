@@ -12,7 +12,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shs.Search.Security
+namespace Search.Security
 {
     public class IdentityProvider : IIdentityProvider, IUserAuthorizationProvider
     {
@@ -21,7 +21,7 @@ namespace Shs.Search.Security
             var currentPrincipal = SecurityContext.Current.CurrentPrincipal;
             try
             {
-                SecurityContext.Current.CurrentPrincipal = new SHSPrincipal(SHSIdentity.Admin);
+                SecurityContext.Current.CurrentPrincipal = new SuffuzPrincipal(SuffuzIdentity.Admin);
                 var queryProvider = AppContext.Current.Container.GetInstance<IModelQueryProviderBuilder>().CreateQueryProvider<IAny>();
                 var query = string.Format("{0}{{Username = '{3}'}}+>{1}+>{2} RETURNS PATHS",
                     ModelTypeManager.GetModelName<IUser>(),
@@ -88,7 +88,7 @@ namespace Shs.Search.Security
                     }
                 }
 
-                var claimsIdentity = new SHSIdentity(user.Username, customer_id, true);
+                var claimsIdentity = new SuffuzIdentity(user.Username, customer_id, true);
                 foreach (var role in roles)
                 {
                     if (role == null) continue;
@@ -119,7 +119,7 @@ namespace Shs.Search.Security
             if (SecurityContext.Current?.CurrentPrincipal?.Identity?.IsAuthenticated ?? false)
             {
                 var queryProvider = AppContext.Current.Container.GetInstance<IModelQueryProviderBuilder>().CreateQueryProvider<IAny>();
-                var identity = SecurityContext.Current.CurrentPrincipal.Identity as SHSIdentity;
+                var identity = SecurityContext.Current.CurrentPrincipal.Identity as SuffuzIdentity;
                 var results = queryProvider.Query(string.Format("{1}{{Username = '{0}'}}+>{2}+>{3} RETURNS PATHS",
                     identity.Name,
                     ModelTypeManager.GetModelName<IUser>(),

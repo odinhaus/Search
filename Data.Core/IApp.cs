@@ -10,26 +10,26 @@ using System.Threading.Tasks;
 namespace Data.Core
 {
     [TypeConverter(typeof(ModelTypeConverter))]
-    [Model("App", "Shs")]
+    [Model("App")]
     public interface IApp : IModel<long>
     {
         string Name { get; set; }
     }
 
     [TypeConverter(typeof(ModelTypeConverter))]
-    [Model("Any", "Shs")]
+    [Model("Any")]
     public interface IAny : IModel
     {
     }
 
     [TypeConverter(typeof(ModelTypeConverter))]
-    [Model("owns", "Shs")]
+    [Model("owns")]
     public interface owns : ILink
     {
     }
 
     [TypeConverter(typeof(ModelTypeConverter))]
-    [Model("any", "Shs")]
+    [Model("any")]
     public interface any : ILink
     {
     }

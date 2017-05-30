@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace Data.Core.Security
 {
     [TypeConverter(typeof(ModelTypeConverter))]
-    [Model("User", "Identification")]
+    [Model("User")]
     public interface IUser : IModel<long>
     {
 
@@ -46,9 +46,9 @@ namespace Data.Core.Security
 
         static IUserDefaults()
         {
-            Administrator = new SHSPrincipal(new SHSIdentity(AdministrativeUser, "Shs", true));
-            ((SHSIdentity)Administrator.Identity).Claims.Add(new Claim(ClaimTypes.Role, "Admin", ClaimValueTypes.String, AppContext.Name));
-            ((SHSIdentity)Administrator.Identity).Claims.Add(new Claim(ClaimTypes.NameIdentifier, AdministrativeUser, ClaimValueTypes.String, AppContext.Name));
+            Administrator = new SuffuzPrincipal(new SuffuzIdentity(AdministrativeUser, "Suffuz", true));
+            ((SuffuzIdentity)Administrator.Identity).Claims.Add(new Claim(ClaimTypes.Role, "Admin", ClaimValueTypes.String, AppContext.Name));
+            ((SuffuzIdentity)Administrator.Identity).Claims.Add(new Claim(ClaimTypes.NameIdentifier, AdministrativeUser, ClaimValueTypes.String, AppContext.Name));
         }
     }
 

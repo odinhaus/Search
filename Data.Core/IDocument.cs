@@ -8,7 +8,7 @@ using System.ComponentModel;
 namespace Data.Core
 {
     [TypeConverter(typeof(ModelTypeConverter))]
-    [Model("Document", "Shs")]
+    [Model("Document")]
     public interface IDocument : IModel<long>
     {
         [Searchable]

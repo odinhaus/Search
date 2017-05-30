@@ -38,7 +38,7 @@ namespace Common.Security
         public LocalStorageTokenStore()
         {
             this.Protector = AppContext.Current.Container.GetInstance<ITokenProtector>();
-            this.Root = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "Shs");
+            this.Root = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "Suffuz");
             if (!Directory.Exists(Root))
             {
                 Directory.CreateDirectory(Root);
@@ -71,8 +71,8 @@ namespace Common.Security
                     if (_cache.Contains(key))
                     {
                         identity = _cache[key] as IClaimsIdentity;
-                        expiration = ((SHSIdentity)identity).TokenExpiration;
-                        return ((SHSIdentity)identity).BearerToken;
+                        expiration = ((SuffuzIdentity)identity).TokenExpiration;
+                        return ((SuffuzIdentity)identity).BearerToken;
                     }
 
 
@@ -102,7 +102,7 @@ namespace Common.Security
                                         claims.Add(claim);
                                     }
                                     var token = br.ReadString();
-                                    identity = new SHSIdentity(user, customer, true)
+                                    identity = new SuffuzIdentity(user, customer, true)
                                     {
                                         BearerToken = token,
                                         TokenExpiration = expiration
@@ -148,8 +148,8 @@ namespace Common.Security
                     using (var bw = new BinaryWriter(ms))
                     {
                         bw.Write(identity.Name);
-                        if (identity is SHSIdentity)
-                            bw.Write(((SHSIdentity)identity).CustomerId);
+                        if (identity is SuffuzIdentity)
+                            bw.Write(((SuffuzIdentity)identity).CustomerId);
                         else
                             bw.Write("");
                         bw.Write(identity.AuthenticationType);

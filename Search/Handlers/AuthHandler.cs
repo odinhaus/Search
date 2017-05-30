@@ -56,7 +56,49 @@ namespace Suffuz.Handlers
             }
 
             */
+            var userProfileUri = "https://slack.com/api/users.info?token={0}&user={1}";
+            /*
 
+            {
+              "ok": true,
+              "user": {
+                "id": "U56TJC2A2",
+                "team_id": "T56TWDVEK",
+                "name": "odinhaus",
+                "deleted": false,
+                "color": "9f69e7",
+                "real_name": "Bill Blondin",
+                "tz": "America/Chicago",
+                "tz_label": "Central Daylight Time",
+                "tz_offset": -18000,
+                "profile": {
+                  "first_name": "Bill",
+                  "last_name": "Blondin",
+                  "avatar_hash": "e18ad4aa2287",
+                  "image_24": "https://avatars.slack-edge.com/2017-04-28/175462465760_e18ad4aa228726b35382_24.png",
+                  "image_32": "https://avatars.slack-edge.com/2017-04-28/175462465760_e18ad4aa228726b35382_32.png",
+                  "image_48": "https://avatars.slack-edge.com/2017-04-28/175462465760_e18ad4aa228726b35382_48.png",
+                  "image_72": "https://avatars.slack-edge.com/2017-04-28/175462465760_e18ad4aa228726b35382_72.png",
+                  "image_192": "https://avatars.slack-edge.com/2017-04-28/175462465760_e18ad4aa228726b35382_192.png",
+                  "image_512": "https://avatars.slack-edge.com/2017-04-28/175462465760_e18ad4aa228726b35382_512.png",
+                  "image_1024": "https://avatars.slack-edge.com/2017-04-28/175462465760_e18ad4aa228726b35382_1024.png",
+                  "image_original": "https://avatars.slack-edge.com/2017-04-28/175462465760_e18ad4aa228726b35382_original.png",
+                  "phone": "832.381.8488",
+                  "real_name": "Bill Blondin",
+                  "real_name_normalized": "Bill Blondin"
+                },
+                "is_admin": true,
+                "is_owner": true,
+                "is_primary_owner": true,
+                "is_restricted": false,
+                "is_ultra_restricted": false,
+                "is_bot": false,
+                "updated": 1493389056,
+                "has_2fa": false
+              }
+            }
+
+            */
             var clientId = AppContext.GetEnvironmentVariable("slack:client_id","");
             var clientSecret = AppContext.GetEnvironmentVariable("slack:client_secret", "");
             var redirectUri = AppContext.GetEnvironmentVariable("slack:redirect_uri", "");
@@ -70,6 +112,8 @@ namespace Suffuz.Handlers
                     code,
                     redirectUri));
 
+                IAppToken token;
+                string tokenMessage;
                 using (var response = request.GetResponse())
                 {
                     using (var stream = response.GetResponseStream())
@@ -77,13 +121,40 @@ namespace Suffuz.Handlers
                         using (var sr = new StreamReader(stream))
                         {
                             var json = sr.ReadToEnd();
-                            
-                            var result = new  HttpResponseMessage(HttpStatusCode.OK);
-                            result.Content = new StringContent(RegisterTeamToken(json));
-                            return result;
+                            // TODO: handle faults
+                            tokenMessage = RegisterTeamToken(json, out token);
                         }
                     }
                 }
+
+                request = HttpWebRequest.CreateHttp(string.Format(userProfileUri, token.Token, token.UserId));
+                string username, firstName, lastName, email;
+
+                using (var response = request.GetResponse())
+                {
+                    using (var stream = response.GetResponseStream())
+                    {
+                        using (var sr = new StreamReader(stream))
+                        {
+                            var json = sr.ReadToEnd();
+                            ReadProfile(json, out username, out firstName, out lastName, out email);
+                        }
+                    }
+                }
+
+
+                // get the user's profile from https://slack.com/api/users.profile.get?token=xoxp-176948471495-176936410342-186937474071-5681777a245854d84edb4a8e179472ab&user=U56TJC2A2
+
+                var result = new HttpResponseMessage(HttpStatusCode.Found);
+                result.Headers.Add("Location", AppContext.GetEnvironmentVariable("WebUri", "") 
+                    + "/#/signup?tokenKey=" + token.Key.ToString() 
+                    + "&teamName=" + token.TeamName 
+                    + "&userId=" + token.UserId
+                    + "&userName=" + username
+                    + "&firstName=" + firstName
+                    + "&lastName=" + lastName
+                    + "&email=" + email);
+                return result;
             }
             catch
             {
@@ -91,7 +162,18 @@ namespace Suffuz.Handlers
             }
         }
 
-        protected virtual string RegisterTeamToken(string json)
+        private void ReadProfile(string json, out string username, out string firstName, out string lastName, out string email)
+        {
+            var jObj = JObject.Parse(json);
+            var jUser = jObj.Property("user").Value as JObject;
+            username = jUser.Property("name").Value.ToString();
+            var jProfile = jUser.Property("profile").Value as JObject;
+            firstName = jProfile.Property("first_name").Value.ToString();
+            lastName = jProfile.Property("last_name").Value.ToString();
+            email = jProfile.Property("email")?.Value?.ToString();
+        }
+
+        protected virtual string RegisterTeamToken(string json, out IAppToken token)
         {
             var principal = SecurityContext.Current.CurrentPrincipal;
             try
@@ -102,7 +184,7 @@ namespace Suffuz.Handlers
 
                 var appTokenQP = AppContext.Current.Container.GetInstance<IModelQueryProviderBuilder>().CreateQueryProvider<IAppToken>();
 
-                IAppToken token = appTokenQP.Query(string.Format("{0}{{TeamId = '{1}'}}", ModelTypeManager.GetModelName<IAppToken>(), teamId)).Cast<IAppToken>().FirstOrDefault();
+                token = appTokenQP.Query(string.Format("{0}{{TeamId = '{1}'}}", ModelTypeManager.GetModelName<IAppToken>(), teamId)).Cast<IAppToken>().FirstOrDefault();
 
                 if (token == null)
                     token = Model.New<IAppToken>();
@@ -125,8 +207,8 @@ namespace Suffuz.Handlers
                 if (jObj.TryGetValue("bot", out bot))
                 {
                     var b = Model.New<IBotUserToken>();
-                    b.UserId = ((JObject)incomingWebHook).Property("bot_user_id")?.Value?.ToString();
-                    b.Token = ((JObject)incomingWebHook).Property("bot_access_token")?.Value?.ToString();
+                    b.UserId = ((JObject)bot).Property("bot_user_id")?.Value?.ToString();
+                    b.Token = ((JObject)bot).Property("bot_access_token")?.Value?.ToString();
                     token.BotUserToken = b;
                 }
                 var appTokenPP = AppContext.Current.Container.GetInstance<IModelPersistenceProviderBuilder>().CreatePersistenceProvider<IAppToken>();
@@ -139,12 +221,13 @@ namespace Suffuz.Handlers
                         var ouI = AppContext.Current.Container.GetInstance<IOrgUnitInitializer>();
                         ou = ouI.Create(token.TeamId, token.TeamName);
                     }
-
-                    return NewTokenResponse(appTokenPP.Create(token, ou));
+                    token = appTokenPP.Create(token, ou);
+                    return NewTokenResponse(token);
                 }
                 else
                 {
-                    return UpdatedTokenResponse(appTokenPP.Update(token));
+                    token = appTokenPP.Update(token);
+                    return UpdatedTokenResponse(token);
                 }
             }
             finally

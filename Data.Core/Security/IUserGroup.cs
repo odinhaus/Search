@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Data.Core.Security
 {
     [TypeConverter(typeof(ModelTypeConverter))]
-    [Model("UserGroup", "Identification")]
+    [Model("UserGroup")]
     public interface IUserGroup : IModel<long>
     {
         [BinarySerializable(10)]

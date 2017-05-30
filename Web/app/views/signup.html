@@ -1,0 +1,35 @@
+﻿<form class="form-login title-heading" role="form">
+    <div style="width: 100%">
+        <div class="breadcrumbs">
+            <span><a href="#/signup/customer">Step 1: Register Your Team</a></span>
+            <span> > </span>
+            <span class="active">Step 2: Register Payment Method</span>
+            <span> > </span>
+            <span><a href="#/setup">Step 3: Index Your Content</a></span>
+        </div>
+        <img src="/content/images/suffuz_512.png" style="height:128px;display:inline;" />
+        <h2 class="title-heading" style="display:inline">Step 2: Register Payment Method</h2><br/>
+        <input readonly="readonly" type="text" style="width: 50%;display:inline;" class="form-control" placeholder="Slack/Suffuz Team Prefix" data-ng-model="registration.customerPrefix" required autofocus/><span style="width: 50%; line-height: 55px;">.suffuz.com</span>
+        <input readonly="readonly" type="text" class="form-control" placeholder="Username" data-ng-model="registration.userName" required/>
+        <input type="text" class="form-control" placeholder="First Name" data-ng-model="registration.firstName" required/>
+        <input type="text" class="form-control" placeholder="Last Name" data-ng-model="registration.lastName" required/>
+        <input type="text" class="form-control" placeholder="Email" data-ng-model="registration.email" required/>
+        <hr/>
+
+        <h2>Pricing Details</h2>
+        <label style="font-size:1em"><input type="checkbox" data-ng-model="registration.agreeToTerms" required /><span style="margin-left:0.25em">I have read and agree to <a href="/#/pricing">Suffuz's Pricing and Payments Terms</a></span></label>
+
+        <hr />
+        <h2>Payment Details</h2>
+        <input type="text" class="form-control" placeholder="Name on Credit/Debit Card" data-ng-model="registration.nameOnCard" required />
+        <input type="text" class="form-control" placeholder="Card Number" data-ng-model="registration.cardNumber" required />
+        <input type="text" class="form-control" placeholder="Expiration (MM/YYYY)" data-ng-model="registration.cardExp"  required />
+        <input type="text" class="form-control" placeholder="Security Code (On Back of Card)" data-ng-model="registration.cardCVV" required />
+        <label style="font-size:1em"><input type="checkbox" data-ng-model="registration.cardAuthorization" required /><span style="margin-left:0.25em">I am legally authorized to create charges for this card</span></label>
+
+        <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="signUp()">Submit</button>
+        <div data-ng-hide="message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
+            {{message}}
+        </div>
+    </div>
+</form>

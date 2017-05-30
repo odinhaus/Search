@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Data.Core.Security
 {
     [TypeConverter(typeof(ModelTypeConverter))]
-    [Model("hasPermission", "Security")]
+    [Model("hasPermission")]
     public interface hasPermission : ILink<long>
     {
     }

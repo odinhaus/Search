@@ -16,7 +16,7 @@ namespace Data.Core
         Delete
     }
 
-    [Model("audit", "Shs")]
+    [Model("audit")]
     public interface IAuditEvent : ILink<long>
     {
         [BinarySerializable(10)]

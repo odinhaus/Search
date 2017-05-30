@@ -34,7 +34,7 @@ namespace Data.ArangoDB
                 "Modified": "2017-01-19T20:55:05.1615611Z",
                 "Name": "check_1201.jpg",
                 "Parent": "SHSFS/some_customer/Checks/",
-                "_id": "Shs_Document/11132371",
+                "_id": "Document/11132371",
                 "_key": "11132371",
                 "_rev": "11219845",
                 "_Edges": [
@@ -45,7 +45,7 @@ namespace Data.ArangoDB
                     "Modified": "1/19/2017 9:22:10 AM",
                     "SourceType": "Document",
                     "TargetType": "Financial.Check",
-                    "_from": "Shs_Document/11132371",
+                    "_from": "Document/11132371",
                     "_id": "Edge/11137846",
                     "_key": "11137846",
                     "_rev": "11137846",

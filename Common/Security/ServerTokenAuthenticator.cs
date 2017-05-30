@@ -22,13 +22,13 @@ using Microsoft.Owin.Security;
 
 namespace Common.Security
 {
-    public class SHSServerTokenAuthenticator : IHttpTokenAuthenticator
+    public class ServerTokenAuthenticator : IHttpTokenAuthenticator
     {
         static MemoryCache _cache = MemoryCache.Default;
 
         public bool Authenticate(string token, TokenType tokenType, out IPrincipal principal)
         {
-            if (tokenType == TokenType.OAuth_SHS)
+            if (tokenType == TokenType.OAuth_SUFFUZ)
             {
                 var hash = token.ToBase64SHA1();
                 lock (_cache)
@@ -47,10 +47,10 @@ namespace Common.Security
                         var identity = identityProvider.Create(ticket.Identity, ticket.Identity.FindFirst(c => c.Type.Equals("customer_id"))?.Value, ticket.Identity.FindFirst(c => c.Type.Equals("customer_name"))?.Value);
                         if (identity != null)
                         {
-                            principal = new SHSPrincipal(identity);
-                            if (identity is SHSIdentity)
+                            principal = new SuffuzPrincipal(identity);
+                            if (identity is SuffuzIdentity)
                             {
-                                ((SHSIdentity)identity).BearerToken = token;
+                                ((SuffuzIdentity)identity).BearerToken = token;
                             }
                             foreach (var claim in ticket.Identity.Claims)
                             {

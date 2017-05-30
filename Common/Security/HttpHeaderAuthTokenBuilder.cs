@@ -11,7 +11,7 @@ namespace Common.Security
 {
     public enum TokenType
     {
-        OAuth_SHS,
+        OAuth_SUFFUZ,
         OAuth_ADFS,
         OAuth_Google,
         OAuth_Facebook,
@@ -19,41 +19,41 @@ namespace Common.Security
         LocalStore,
         Unknown
     }
-    public class SHSHttpHeaderAuthTokenBuilder : IHttpHeaderAuthTokenBuilder
+    public class HttpHeaderAuthTokenBuilder : IHttpHeaderAuthTokenBuilder
     {
-        public const string SHS_AUTH_TOKEN_HEADER = "Authorization";
-        public const string SHS_AUTH_TOKEN_USER = "username";
-        public const string SHS_AUTH_TOKEN_PASSWORD = "password";
-        public const string SHS_AUTH_TOKEN_CUSTOMER = "customer";
-        public const string SHS_AUTH_TOKEN_VERBOSE = "verbose";
-        public const string SHS_AUTH_TOKEN_CLIENT_ID = "client_id";
-        public const string SHS_AUTH_TOKEN_CLIENT_SECRET = "client_secret";
-        public const string SHS_AUTH_TOKEN_GRANT_TYPE = "grant_type";
-        public const string SHS_OAUTH_BEARER = "Bearer";
-        public const string SHS_AUTH = "OAuth_SHS";
-        public const string SHS_OAUTH_BASIC = "Basic";
+        public const string SUFFUZ_AUTH_TOKEN_HEADER = "Authorization";
+        public const string SUFFUZ_AUTH_TOKEN_USER = "username";
+        public const string SUFFUZ_AUTH_TOKEN_PASSWORD = "password";
+        public const string SUFFUZ_AUTH_TOKEN_CUSTOMER = "customer";
+        public const string SUFFUZ_AUTH_TOKEN_VERBOSE = "verbose";
+        public const string SUFFUZ_AUTH_TOKEN_CLIENT_ID = "client_id";
+        public const string SUFFUZ_AUTH_TOKEN_CLIENT_SECRET = "client_secret";
+        public const string SUFFUZ_AUTH_TOKEN_GRANT_TYPE = "grant_type";
+        public const string SUFFUZ_OAUTH_BEARER = "Bearer";
+        public const string SUFFUZ_AUTH = "OAuth_Suffuz";
+        public const string SUFFUZ_OAUTH_BASIC = "Basic";
 
-        public SHSHttpHeaderAuthTokenBuilder()
+        public HttpHeaderAuthTokenBuilder()
         {
         }
 
         public string GetRequestToken(out string headerName)
         {
             var identity = SecurityContext.Global.Provider.CurrentPrincipal != null && SecurityContext.Global.Provider.CurrentPrincipal.Identity != null
-                ? (SHSIdentity)SecurityContext.Global.Provider.CurrentPrincipal.Identity
-                : new SHSIdentity("", "", false);
-            headerName = SHS_AUTH_TOKEN_HEADER;
+                ? (SuffuzIdentity)SecurityContext.Global.Provider.CurrentPrincipal.Identity
+                : new SuffuzIdentity("", "", false);
+            headerName = SUFFUZ_AUTH_TOKEN_HEADER;
             string token;
             DateTime expires;
             IClaimsIdentity tokenIdentity;
             if (identity.IsAuthenticated && SecurityContext.Global.Provider.TokenStore.TryGetToken(identity.Name, TokenType.LocalStore, out token, out expires, out tokenIdentity))
             {
-                return string.Format(SHS_OAUTH_BEARER + " {0}", token);
+                return string.Format(SUFFUZ_OAUTH_BEARER + " {0}", token);
             }
             else
             {
                 return string.Format("{0} {1}",
-                    SHS_OAUTH_BASIC,
+                    SUFFUZ_OAUTH_BASIC,
                     EncodeBasicToken());
             }
         }
@@ -68,13 +68,13 @@ namespace Common.Security
         {
             token = null;
             tokenType = TokenType.Unknown;
-            if (httpRequest.Headers.Contains(SHS_AUTH_TOKEN_HEADER))
+            if (httpRequest.Headers.Contains(SUFFUZ_AUTH_TOKEN_HEADER))
             {
-                token = httpRequest.Headers.First(h => h.Key.Equals(SHS_AUTH_TOKEN_HEADER, StringComparison.InvariantCultureIgnoreCase)).Value.First();
+                token = httpRequest.Headers.First(h => h.Key.Equals(SUFFUZ_AUTH_TOKEN_HEADER, StringComparison.InvariantCultureIgnoreCase)).Value.First();
                 var split = token.Split(' ');
-                if (split[0].ToLower() == SHS_OAUTH_BEARER.ToLower())
+                if (split[0].ToLower() == SUFFUZ_OAUTH_BEARER.ToLower())
                 {
-                    tokenType = TokenType.OAuth_SHS;
+                    tokenType = TokenType.OAuth_SUFFUZ;
                 }
                 else return false;
                 return true;

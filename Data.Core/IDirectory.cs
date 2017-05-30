@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Data.Core
 {
     [TypeConverter(typeof(ModelTypeConverter))]
-    [Model("Directory", "Shs")]
+    [Model("Directory")]
     public interface IDirectory : IModel<long>
     {
         [Searchable]

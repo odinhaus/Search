@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Data.Core.Security
 {
     [TypeConverter(typeof(ModelTypeConverter))]
-    [Model("Permission", "Security")]
+    [Model("Permission")]
     public interface IPerm : IModel<long>
     {
         [BinarySerializable(10)]

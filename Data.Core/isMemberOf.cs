@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Data.Core
 {
-    [Model("isMemberOf", "Shs")]
+    [Model("isMemberOf")]
     public interface isMemberOf : ILink<long>
     {
     }

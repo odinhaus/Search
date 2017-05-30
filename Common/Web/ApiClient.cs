@@ -65,7 +65,7 @@ namespace Common.Web
             catch { }
         }
 
-        public SHSPrincipal Authenticate(string username, string password)
+        public SuffuzPrincipal Authenticate(string username, string password)
         {
             var uri = AppContext.ApiUris.AuthenticateUri;
             var request = CreateRequest(uri, "POST");
@@ -96,7 +96,7 @@ namespace Common.Web
                     }
                 }).Wait(30000);
                 var jObj = JObject.Parse(closedResult);
-                var identity = new SHSIdentity(
+                var identity = new SuffuzIdentity(
                     jObj["userName"].Value<string>(),
                     jObj["customer_id"].Value<string>(),
                     jObj["access_token"] != null)
@@ -110,11 +110,11 @@ namespace Common.Web
                     var sc = claim.ToObject<SerializableClaim>();
                     identity.Claims.Add(new Microsoft.IdentityModel.Claims.Claim(sc.Type, sc.Value, sc.ValueType, sc.Issuer, sc.OriginalIssuer));
                 }
-                return new SHSPrincipal(identity);
+                return new SuffuzPrincipal(identity);
             }
             catch(Exception ex)
             {
-                return new SHSPrincipal(new SHSIdentity(
+                return new SuffuzPrincipal(new SuffuzIdentity(
                     username,
                     "",
                     false)

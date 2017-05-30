@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Data.Core
 {
     [TypeConverter(typeof(ModelTypeConverter))]
-    [Model("UserPreferences", "System")]
+    [Model("UserPreferences")]
     public interface IUserPreferences : IModel<long>
     {
         [Searchable]
@@ -26,7 +26,7 @@ namespace Data.Core
         Flock<ISavedBlade> FavoredBlades { get; set; }
     }
 
-    [Model("SavedBlade", "System.UserPreferences")]
+    [Model("SavedBlade", "UserPreferences")]
     public interface ISavedBlade : ISubModel
     {
         [Searchable]

@@ -21,7 +21,7 @@ namespace Common.Security
 
         public SecurityContextProviderBase(IHttpTokenAuthenticator tokenAuthenticator)
         {
-            CurrentPrincipal = new SHSPrincipal(new SHSIdentity("", "", false));
+            CurrentPrincipal = new SuffuzPrincipal(new SuffuzIdentity("", "", false));
             EncryptionKeyPath = OnGetEncryptionKeyPath();
             TokenAuthenticator = tokenAuthenticator;
             GetCachedUserKeys();
@@ -74,7 +74,7 @@ namespace Common.Security
 
         public IPrincipal CurrentImpersonationPrincipal
         {
-            get { return SHSImpersonationPrincipal.Current; }
+            get { return SuffuzImpersonationPrincipal.Current; }
         }
 
         public abstract string AppName { get; }
@@ -95,7 +95,7 @@ namespace Common.Security
         /// <returns></returns>
 		public virtual IPrincipal Authenticate(string username, string password)
         {
-            CurrentPrincipal = new SHSPrincipal(new SHSIdentity(username, "", false));
+            CurrentPrincipal = new SuffuzPrincipal(new SuffuzIdentity(username, "", false));
             CurrentPrincipal = OnAuthenticate(username, password);
 
             if (CurrentImpersonationPrincipal != null)
@@ -118,7 +118,7 @@ namespace Common.Security
         /// <returns></returns>
         public virtual IPrincipal Authenticate(string username, TokenType tokenType)
         {
-            CurrentPrincipal = new SHSPrincipal(new SHSIdentity(username, "", false));
+            CurrentPrincipal = new SuffuzPrincipal(new SuffuzIdentity(username, "", false));
             CurrentPrincipal = OnAuthenticate(username, tokenType);
 
             if (CurrentImpersonationPrincipal != null)
@@ -134,7 +134,7 @@ namespace Common.Security
         public virtual void Logoff()
         {
             TokenStore.DeleteToken((IClaimsIdentity)CurrentPrincipal?.Identity, TokenType.LocalStore);
-            CurrentPrincipal = new SHSPrincipal(new SHSIdentity("", "", false));
+            CurrentPrincipal = new SuffuzPrincipal(new SuffuzIdentity("", "", false));
             OnAuthenticationComplete();
         }
 
@@ -161,9 +161,9 @@ namespace Common.Security
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        protected abstract SHSPrincipal OnAuthenticate(string username, string password);
+        protected abstract SuffuzPrincipal OnAuthenticate(string username, string password);
 
-        protected abstract SHSPrincipal OnAuthenticate(string username, TokenType tokenType);
+        protected abstract SuffuzPrincipal OnAuthenticate(string username, TokenType tokenType);
 
         /// <summary>
         /// validates and assigns an IPrincipal to CurrentImpersonationPrincipal if impersonation is successful
@@ -176,7 +176,7 @@ namespace Common.Security
             var impPrin = OnImpersonate(username);
             if (impPrin != null)
             {
-                disposable = SHSImpersonationPrincipal.Impersonate(impPrin);
+                disposable = SuffuzImpersonationPrincipal.Impersonate(impPrin);
             }
             return disposable;
         }
@@ -186,7 +186,7 @@ namespace Common.Security
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        protected abstract SHSPrincipal OnImpersonate(string username);
+        protected abstract SuffuzPrincipal OnImpersonate(string username);
 
         /// <summary>
         /// Gets the user key cache path

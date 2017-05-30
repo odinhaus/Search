@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Data.Core
 {
     [TypeConverter(typeof(ModelTypeConverter))]
-    [Model("Drive", "Shs")]
+    [Model("Drive")]
     public interface IDrive : IModel<long>
     {
         string CustomerId { get; set; }

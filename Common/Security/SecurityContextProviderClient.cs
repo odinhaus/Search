@@ -46,45 +46,45 @@ namespace Common.Security
 
                 if (CurrentPrincipal.Identity.IsAuthenticated)
                 {
-                    if (!string.IsNullOrEmpty(((SHSIdentity)CurrentPrincipal.Identity).BearerToken))
+                    if (!string.IsNullOrEmpty(((SuffuzIdentity)CurrentPrincipal.Identity).BearerToken))
                     {
-                        var bearerToken = ((SHSIdentity)CurrentPrincipal.Identity).BearerToken;
-                        var expiration = ((SHSIdentity)CurrentPrincipal.Identity).TokenExpiration;
+                        var bearerToken = ((SuffuzIdentity)CurrentPrincipal.Identity).BearerToken;
+                        var expiration = ((SuffuzIdentity)CurrentPrincipal.Identity).TokenExpiration;
                         TokenStore.SaveToken((IClaimsIdentity)CurrentPrincipal.Identity, TokenType.LocalStore, bearerToken, expiration);
                     }
 
                     // we need to keep the token up to date, because it will expire
-                    Scheduler.Current.Schedule(((SHSIdentity)CurrentPrincipal.Identity).TokenExpiration.Subtract(TimeSpan.FromMinutes(2)), () =>
+                    Scheduler.Current.Schedule(((SuffuzIdentity)CurrentPrincipal.Identity).TokenExpiration.Subtract(TimeSpan.FromMinutes(2)), () =>
                     {
                         return SecurityContext.Global.Authenticate(username, password);
                     });
                 }
                 else
                 {
-                    TokenStore.DeleteToken((IClaimsIdentity)CurrentPrincipal.Identity, TokenType.OAuth_SHS);
+                    TokenStore.DeleteToken((IClaimsIdentity)CurrentPrincipal.Identity, TokenType.OAuth_SUFFUZ);
                 }
                 return CurrentPrincipal;
             }
         }
 
-        protected override SHSPrincipal OnAuthenticate(string username, string password)
+        protected override SuffuzPrincipal OnAuthenticate(string username, string password)
         {
-            CurrentPrincipal = new SHSPrincipal(new SHSIdentity(username, "", false)); // forces a new login attempt
+            CurrentPrincipal = new SuffuzPrincipal(new SuffuzIdentity(username, "", false)); // forces a new login attempt
             SecurityContext.Current.ScopeId = Guid.NewGuid().ToString();
             return AppContext.Current.Container.GetInstance<IApiClient>().Authenticate(username, password);
         }
 
-        protected override SHSPrincipal OnAuthenticate(string username, TokenType tokenType)
+        protected override SuffuzPrincipal OnAuthenticate(string username, TokenType tokenType)
         {
-            CurrentPrincipal = new SHSPrincipal(new SHSIdentity(username, "", false)); // forces a new login attempt
+            CurrentPrincipal = new SuffuzPrincipal(new SuffuzIdentity(username, "", false)); // forces a new login attempt
             string token;
             DateTime expiration;
             IClaimsIdentity identity;
             if (TokenStore.TryGetToken(username, TokenType.LocalStore, out token, out expiration, out identity ) && expiration >= DateTime.Now)
             {
-                CurrentPrincipal = new SHSPrincipal(identity);
+                CurrentPrincipal = new SuffuzPrincipal(identity);
             }
-            return (SHSPrincipal)CurrentPrincipal;   
+            return (SuffuzPrincipal)CurrentPrincipal;   
         }
 
         protected override void OnDeleteCachedKey(string keyFile)
@@ -151,9 +151,9 @@ namespace Common.Security
             return libraryPath;
         }
 
-        protected override SHSPrincipal OnImpersonate(string username)
+        protected override SuffuzPrincipal OnImpersonate(string username)
         {
-            return new SHSPrincipal(new SHSIdentity(username, "6c2b995b-ff27-4995-b07e-79ca1da43e59", false));
+            return new SuffuzPrincipal(new SuffuzIdentity(username, "6c2b995b-ff27-4995-b07e-79ca1da43e59", false));
         }
 
         protected override ICustomKey OnLoadUserKey(string file)
