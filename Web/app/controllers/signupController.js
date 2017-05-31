@@ -15,7 +15,8 @@ app.controller('signupController', ['$scope', '$location', '$timeout', 'authServ
         cardNumber: "",
         cardExp: "",
         cardCVV: "",
-        cardAuthorization: false
+        cardAuthorization: false,
+        limitToFree: false
     };
 
     $scope.signUp = function () {

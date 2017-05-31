@@ -12,6 +12,7 @@ namespace Suffuz.Identity
     using Autofac.Builder;
     using Autofac.Core;
     using Autofac.Integration.WebApi;
+    using Common;
     using Common.OWIN;
     using Common.Security;
     using Entities;
@@ -44,6 +45,8 @@ namespace Suffuz.Identity
 
         public void Configuration(IAppBuilder app)
         {
+            AppContext.SetEnvironmentVariables(Program.Args);
+
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationIdentityContext>(ApplicationIdentityContext.Create);
 

@@ -8,10 +8,13 @@ using System.Threading.Tasks;
 
 namespace Suffuz
 {
-    class Program
+    public class Program
     {
+        public static string[] Args { get; private set; }
+
         static void Main(string[] args)
         {
+            Args = args;
             var baseUri = ConfigurationManager.AppSettings["BaseUri"];
             Console.WriteLine("Starting web host...");
             WebApp.Start<Startup>(baseUri);

@@ -91,7 +91,7 @@ namespace Common.Security
             var claims = new ClaimCollection(copy);
             foreach(var claim in this.Claims.ToArray())
             {
-                claims.Add(claim);
+                claims.Add(new Claim(claim.ClaimType, claim.Value, claim.Value, claim.Issuer, claim.OriginalIssuer));
             }
             copy.Claims = claims;
             return copy;

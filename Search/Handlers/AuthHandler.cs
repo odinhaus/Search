@@ -99,9 +99,9 @@ namespace Suffuz.Handlers
             }
 
             */
-            var clientId = AppContext.GetEnvironmentVariable("slack:client_id","");
-            var clientSecret = AppContext.GetEnvironmentVariable("slack:client_secret", "");
-            var redirectUri = AppContext.GetEnvironmentVariable("slack:redirect_uri", "");
+            var clientId = AppContext.GetEnvironmentVariable("slack_client_id","");
+            var clientSecret = AppContext.GetEnvironmentVariable("slack_client_secret", "");
+            var redirectUri = AppContext.GetEnvironmentVariable("slack_redirect_uri", "");
 
             try
             {

@@ -27,6 +27,8 @@ namespace Suffuz
     {
         public void Configuration(IAppBuilder app)
         {
+            AppContext.Run(Program.Args, createAppContext: false);
+
             var options = new OAuthBearerAuthenticationOptions()
             {
                 AuthenticationMode = Microsoft.Owin.Security.AuthenticationMode.Active,
@@ -44,9 +46,6 @@ namespace Suffuz
 
             app.CreatePerOwinContext(() => new OAuthBearerOptionsProvider(options));
             app.CreatePerOwinContext(() => new AppBuilderProvider(app));
-
-
-            AppContext.Run(createAppContext: false);
 
             var config = new HttpConfiguration();
             RouteConfig.Register(config);

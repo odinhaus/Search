@@ -10,10 +10,13 @@ namespace Suffuz.Identity
 {
     public static class Program
     {
+        public static string[] Args { get; private set; }
+
         public static void Main(params string[] args)
         {
             try
             {
+                Args = args;
                 var baseUri = ConfigurationManager.AppSettings["Allowed_Origin"];
                 Console.WriteLine("Starting web host...");
                 WebApp.Start<Startup>(baseUri);

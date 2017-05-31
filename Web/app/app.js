@@ -38,6 +38,11 @@ app.config(function ($routeProvider) {
         templateUrl: "/app/views/tokens.html"
     });
 
+    $routeProvider.when("/pricing", {
+        controller: "pricingController",
+        templateUrl: "/app/views/pricing.html"
+    });
+
     $routeProvider.otherwise({ redirectTo: "/home" });
 
 });

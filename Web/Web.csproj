@@ -86,6 +86,7 @@
     <Content Include="app\controllers\indexController.js" />
     <Content Include="app\controllers\loginController.js" />
     <Content Include="app\controllers\ordersController.js" />
+    <Content Include="app\controllers\pricingController.js" />
     <Content Include="app\controllers\refreshController.js" />
     <Content Include="app\controllers\customerSignupController.js" />
     <Content Include="app\controllers\signupController.js" />
@@ -97,6 +98,7 @@
     <Content Include="app\views\home.html" />
     <Content Include="app\views\login.html" />
     <Content Include="app\views\orders.html" />
+    <Content Include="app\views\pricing.html" />
     <Content Include="app\views\refresh.html" />
     <Content Include="app\views\signup-customer.html" />
     <Content Include="app\views\signup.html" />
