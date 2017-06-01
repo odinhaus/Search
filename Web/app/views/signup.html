@@ -1,37 +1,53 @@
-﻿<form class="form-login title-heading" role="form">
-    <div style="width: 100%">
-        <div class="breadcrumbs">
-            <span><a href="#/signup/customer">Step 1: Register Your Team</a></span>
-            <span> > </span>
-            <span class="active">Step 2: Register Payment Method</span>
-            <span> > </span>
-            <span><a href="#/setup">Step 3: Index Your Content</a></span>
-        </div>
-        <img src="/content/images/suffuz_512.png" style="height:128px;display:inline;" />
-        <h2 class="title-heading" style="display:inline">Step 2: Register Payment Method</h2><br/>
-        <input readonly="readonly" type="text" style="width: 50%;display:inline;" class="form-control" placeholder="Slack/Suffuz Team Prefix" data-ng-model="registration.customerPrefix" required autofocus/><span style="width: 50%; line-height: 55px;">.suffuz.com</span>
-        <input readonly="readonly" type="text" class="form-control" placeholder="Username" data-ng-model="registration.userName" required/>
-        <input type="text" class="form-control" placeholder="First Name" data-ng-model="registration.firstName" required/>
-        <input type="text" class="form-control" placeholder="Last Name" data-ng-model="registration.lastName" required/>
-        <input type="text" class="form-control" placeholder="Email" data-ng-model="registration.email" required/>
-        <hr/>
-
-        <h2>Pricing Details</h2>
-        <label style="font-size:1em"><input type="checkbox" data-ng-model="registration.agreeToTerms" required /><span style="margin-left:0.25em">I have read and agree to <a href="/#/pricing">Suffuz's Pricing and Payments Terms</a></span></label>
-
-        <hr />
-        <h2>Payment Details</h2>
-        <label style="font-size:1em"><input type="checkbox" data-ng-model="registration.limitToFree" /><span style="margin-left:0.25em">I don't want to submit payment details, limit me to free services only!</span></label>
-        <div ng-hide="registration.limitToFree">
-            <input type="text" class="form-control" placeholder="Name on Credit/Debit Card" data-ng-model="registration.nameOnCard" required />
-            <input type="text" class="form-control" placeholder="Card Number" data-ng-model="registration.cardNumber" required />
-            <input type="text" class="form-control" placeholder="Expiration (MM/YYYY)" data-ng-model="registration.cardExp" required />
-            <input type="text" class="form-control" placeholder="Security Code (On Back of Card)" data-ng-model="registration.cardCVV" required />
-            <label style="font-size:1em"><input type="checkbox" data-ng-model="registration.cardAuthorization" required /><span style="margin-left:0.25em">I am legally authorized to create charges for this card</span></label>
-        </div>
-        <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="signUp()">Submit</button>
-        <div data-ng-hide="message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
-            {{message}}
-        </div>
+﻿<div class="text-center">
+    <div class="title-banner">
+        <img src="/content/images/suffuz_512.png" class="title-logo-small" />
+        <h1 class="title-text-small">Step 2: Register Payment Method</h1>
     </div>
-</form>
+
+    <form class="form-login title-heading shadowbox" role="form">
+        <div style="width: 100%">
+            <div class="breadcrumbs">
+                <span><a href="#/signup/customer">Step 1: Register Your Team</a></span>
+                <span> > </span>
+                <span class="active">Step 2: Register Payment Method</span>
+                <span> > </span>
+                <span><a href="#/setup">Step 3: Index Your Content</a></span>
+            </div>
+            <input readonly="readonly" type="text" style="width: 50%;display:inline;" class="form-control" placeholder="Slack/Suffuz Team Prefix" data-ng-model="registration.customerPrefix" required/><span style="width: 50%; line-height: 55px;display:inline-block;text-align:left;">.suffuz.com</span>
+            <input readonly="readonly" type="text" class="form-control" placeholder="Username" data-ng-model="registration.userName" required/>
+            <input type="text" class="form-control" placeholder="First Name" data-ng-model="registration.firstName" required/>
+            <input type="text" class="form-control" placeholder="Last Name" data-ng-model="registration.lastName" required/>
+            <input type="text" class="form-control" placeholder="Email" data-ng-model="registration.email" required autofocus/>
+            <hr/>
+
+            <h2>Pricing Details</h2>
+            <label style="font-size:1em"><input type="checkbox" data-ng-model="registration.agreeToTerms" required /><span style="margin-left:0.25em">I have read and agree to <a href="/#/pricing">Suffuz's Pricing and Payments Terms</a></span></label>
+
+            <hr />
+            <h2>Payment Details</h2>
+            <label style="font-size:1em"><input type="checkbox" data-ng-model="registration.limitToFree" /><span style="margin-left:0.25em">I don't want to submit payment details, limit me to free services only!</span></label>
+            <div ng-hide="registration.limitToFree">
+                <input type="text" class="form-control" placeholder="Name on Credit/Debit Card" data-ng-model="registration.nameOnCard" required />
+                <input type="text" class="form-control" placeholder="Card Number" data-ng-model="registration.cardNumber" required />
+                <input id="cvv" type="text" class="form-control" placeholder="Expiration (MM/YYYY)" data-ng-model="registration.cardExp" required data-inputmask="'mask':'99/9999'" />
+                <input type="text" class="form-control" placeholder="Security Code (On Back of Card)" data-ng-model="registration.cardCVV" required />
+                <label style="font-size:1em"><input type="checkbox" data-ng-model="registration.cardAuthorization" required /><span style="margin-left:0.25em">I am legally authorized to create charges for this card</span></label>
+                <div style="white-space:normal;margin-top:1.5em;margin-bottom:1.5em;">
+                    <em>* Your payment information is securely maintained and processed by Stripe.com.  We never see nor store your payment details in our system. For more information, visit <a href="https://stripe.com/docs/security/stripe" target="_new">Stripe.com</a>. </em>
+                </div>
+            
+            </div>
+
+            <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="signUp()">Submit</button>
+            <div data-ng-hide="message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
+                {{message}}
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+        $(document).ready(function () {
+            $("#cvv").inputmask();
+        });
+</script>

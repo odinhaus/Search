@@ -10,6 +10,7 @@ body {
     margin-bottom: 60px;
       padding-top: 40px;
   xpadding-bottom: 10px;
+  background-color: #f0f0ff;
 }
 
 
@@ -63,7 +64,7 @@ body {
     }
 
     .jumbotron{
-        background-color: white;
+        background-color: transparent;
     }
 
     .nohover:hover{
@@ -72,16 +73,29 @@ body {
 
     .title-heading{
         width: 100%;
-        line-height:3em;
         align-items: center;
         display: flex;
         justify-content: center;
         margin-top:3em;
+        white-space:nowrap;
+    }
+
+    .title-banner{
+        margin-top:1.5em;
+    }
+
+    .title-logo-small{
+        width:128px;
+    }
+
+    .title-text-small{
+        display: block;
+        white-space:nowrap;
     }
 
     .breadcrumbs{
         font-size:0.75em;
-        
+        margin-bottom:1.5em;
     }
 
     .breadcrumbs a
@@ -91,12 +105,79 @@ body {
 
     .breadcrumbs > .active{
         font-size:1.1em;
-        color:#667;
+        color:#EC008C;
     }
 
     .breadcrumbs > .active a
     {
-        color:#bbc;
+        color:#EC008C;
+    }
+
+    .shadowbox{
+        box-shadow: 0 1px 30px rgba(0,0,0,.1);
+        border-radius:0 0 10px 10px;
+        padding-bottom:10px;
+        border-top:9px solid #00AEEF;
+        background-color:white;
+        width: 300px;
+    }
+
+    .shadowbox-content{
+        border-top:6px solid #EC008C;
+        clear:both;
+    }
+
+    .shadowbox-content-title{
+        clear:both;
+    }
+
+    .price-left{
+        float: left;
+        width: 135px; 
+        margin-left: 5px; 
+        margin-right: 5px;
+    }
+
+    .price-right{
+        float: right;
+        width: 135px; 
+        margin-left: 5px; 
+        margin-right: 5px;
+    }
+
+    .price-divider{
+        float:left;
+        border-right:1px solid #EC008C;
+        width:1px;
+        height:215px;
+        margin-top:85px;
+    }
+
+    @media screen and (min-width: 375px) {
+        .shadowbox {
+            width: 350px;
+        }
+        .price-left, .price-right{
+            width:150px;
+        }
+    }
+
+    @media screen and (min-width: 414px) {
+        .shadowbox {
+            width: 390px;
+        }
+        .price-left, .price-right{
+            width:180px;
+        }
+    }
+
+    @media screen and (min-width: 768px) {
+        .shadowbox {
+            width: 720px;
+        }
+        .price-left, .price-right{
+            width:340px;
+        }
     }
 
     td{
