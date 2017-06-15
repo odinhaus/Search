@@ -22,9 +22,7 @@ app.controller('loginController', ['$scope', '$location', 'authService', 'localS
     };
 
     if ($location.search().access_token) {
-        localStorageService.set("authorizationData", { token: $location.search().access_token, userName: $location.search().userName });
-        authService.authentication.isAuth = true;
-        authService.authentication.userName = $location.search().userName;
+        authService.setCredentials({ token: $location.search().access_token, userName: $location.search().userName, isAuth: true });
         $location.url($location.path('/home')); // trim off the query string params
     }
 

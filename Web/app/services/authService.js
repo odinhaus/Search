@@ -4,11 +4,22 @@ app.factory('authService', ['$http', '$q', 'localStorageService', 'ngAuthSetting
     var serviceBase = ngAuthSettings.apiServiceBaseUri;
     var authServiceFactory = {};
 
-    var _authentication = {
-        isAuth: false,
-        userName: "",
-        useRefreshTokens: false
+    var _getCredentials = function () {
+        var storedAuth = localStorageService.get('authorizationData');
+        return storedAuth ? storedAuth : {
+            isAuth: false,
+            userName: "",
+            useRefreshTokens: false
+        };
     };
+
+    var _setCredentials = function (credentials) {
+        credentials.isAuth = credentials.token != null;
+        localStorageService.set("authorizationData", credentials);
+        authServiceFactory.authentication = _getCredentials();
+    };
+
+    var _authentication = _getCredentials();
 
     var _saveRegistration = function (registration) {
 
@@ -111,6 +122,7 @@ app.factory('authService', ['$http', '$q', 'localStorageService', 'ngAuthSetting
         return deferred.promise;
     };
 
+
     authServiceFactory.saveRegistration = _saveRegistration;
     authServiceFactory.customerRegistration = _customerRegistration;
     authServiceFactory.login = _login;
@@ -118,6 +130,8 @@ app.factory('authService', ['$http', '$q', 'localStorageService', 'ngAuthSetting
     authServiceFactory.fillAuthData = _fillAuthData;
     authServiceFactory.authentication = _authentication;
     authServiceFactory.refreshToken = _refreshToken;
+    authServiceFactory.getCredentials = _getCredentials;
+    authServiceFactory.setCredentials = _setCredentials;
 
     return authServiceFactory;
 }]);
