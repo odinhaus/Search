@@ -1,4 +1,4 @@
-﻿<div class="jumbotron">
+﻿<div class="jumbotron" data-ng-hide="authentication.isAuth">
     <div>
         <div class="text-center">
             <img src="content/images/suffuz_512.png" style="display:inline-block; vertical-align:middle; width:256px;" />
@@ -28,4 +28,7 @@
             </div>
         </div>
     </div>
+</div>
+<div  data-ng-hide="!authentication.isAuth">
+    Configured sources:
 </div>

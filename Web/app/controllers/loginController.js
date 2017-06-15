@@ -1,5 +1,5 @@
 ﻿'use strict';
-app.controller('loginController', ['$scope', '$location', 'authService', function ($scope, $location, authService) {
+app.controller('loginController', ['$scope', '$location', 'authService', 'localStorageService', function ($scope, $location, authService, localStorageService) {
 
     $scope.loginData = {
         userName: "",
@@ -20,5 +20,12 @@ app.controller('loginController', ['$scope', '$location', 'authService', functio
              $scope.message = err.error_description;
          });
     };
+
+    if ($location.search().access_token) {
+        localStorageService.set("authorizationData", { token: $location.search().access_token, userName: $location.search().userName });
+        authService.authentication.isAuth = true;
+        authService.authentication.userName = $location.search().userName;
+        $location.url($location.path('/home')); // trim off the query string params
+    }
 
 }]);

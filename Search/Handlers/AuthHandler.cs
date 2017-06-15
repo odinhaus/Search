@@ -150,7 +150,7 @@ namespace Suffuz.Handlers
                     }
                     else
                     {
-                        result.Headers.Add("Location", AppContext.GetEnvironmentVariable("WebUri", "") + "/#/login?token=" + tokenMessage);
+                        result.Headers.Add("Location", AppContext.GetEnvironmentVariable("WebUri", "") + "/#/login?access_token=" + tokenMessage + "&userName=" + token.UserName);
                     }
                     return result;
                 }
