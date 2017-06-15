@@ -51,10 +51,11 @@ namespace Suffuz.Identity
             {
                 UserName = userModel.UserName,
                 CustomerId = customer.Id,
-
+                Email = userModel.Email
             };
 
-            var result = await userManager.CreateAsync(user, userModel.Password);
+            // 
+            var result = await userManager.CreateAsync(user, userModel.Password ?? System.Guid.NewGuid().ToString());
 
             return result;
         }

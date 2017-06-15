@@ -31,6 +31,14 @@ namespace Suffuz.Data
         IBotUserToken BotUserToken { get; set; }
         [BinarySerializable(16)]
         string UserId { get; set; }
+        [BinarySerializable(17)]
+        string UserName { get; set; }
+        [BinarySerializable(18)]
+        string FirstName { get; set; }
+        [BinarySerializable(19)]
+        string LastName { get; set; }
+        [BinarySerializable(20)]
+        string Email { get; set; }
     }
     [Model("WebHook")]
     [TypeConverter(typeof(ModelTypeConverter))]

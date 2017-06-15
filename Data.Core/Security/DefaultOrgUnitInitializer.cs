@@ -171,6 +171,7 @@ namespace Data.Core.Security
             hasPermissionTest.UserEvaluator = "IsAuthenticated(@user)";
             rule.Policies.Add(hasPermissionTest);
 
+           
             return new IRule[] { rule };
         }
     }

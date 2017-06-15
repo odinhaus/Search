@@ -1,0 +1,5 @@
+// index rich files
+java -Dc=gettingstarted -Dauto=yes -Ddata=files -Drecursive=yes -jar example/exampledocs/post.jar docs/
+
+// starting solr
+bin/solr start -e cloud -noprompt

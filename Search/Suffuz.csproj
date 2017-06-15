@@ -118,6 +118,7 @@
     <Compile Include="Config\ApiConfig.cs" />
     <Compile Include="Config\RouteConfig.cs" />
     <Compile Include="Data\IAppToken.cs" />
+    <Compile Include="Data\OrgUnitInitializer.cs" />
     <Compile Include="DI\SearchRegistry.cs" />
     <Compile Include="Handlers\AuthHandler.cs" />
     <Compile Include="Handlers\FileSystem.cs" />

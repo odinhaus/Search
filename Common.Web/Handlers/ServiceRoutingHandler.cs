@@ -25,6 +25,7 @@ namespace Common.Web.Handlers
     {
         protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            HttpResponseMessage response = null;
             try
             {
                 SecurityContext.Current.Logoff();
@@ -35,7 +36,7 @@ namespace Common.Web.Handlers
                 var auditScopeHandler = AppContext.Current.Container.GetInstance<IHttpAuditScopeTokenReader>();
                 string scopeId;
                 auditScopeHandler.ReadToken(request, out scopeId);
-                
+
 
                 var authTokenHandler = AppContext.Current.Container.GetInstance<IHttpHeaderAuthTokenBuilder>();
                 string token;
@@ -57,7 +58,6 @@ namespace Common.Web.Handlers
 
                 if (locator.Locate(request, out handler))
                 {
-                    HttpResponseMessage response;
                     if (request.Method == HttpMethod.Options)
                     {
                         response = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
@@ -66,24 +66,33 @@ namespace Common.Web.Handlers
                     {
                         response = await sec.ExecuteAsync(() => handler.SendAsync(request, cancellationToken).Result);
                     }
-                    response.Headers.Add("Access-Control-Allow-Origin", "*");
-                    response.Headers.Add("Access-Control-Allow-Headers", "authorization,content-type");
-
-                    return response;
                 }
                 else
                 {
-                    return await sec.ExecuteAsync(() => base.SendAsync(request, cancellationToken).Result);
+                    response = await sec.ExecuteAsync(() => base.SendAsync(request, cancellationToken).Result);
                 }
+
+                return response;
             }
-            catch(System.Security.SecurityException se)
+            catch (System.Security.SecurityException se)
             {
-                var ret = new HttpResponseMessage(System.Net.HttpStatusCode.Unauthorized);
-                ret.Content = new StringContent("{ \"Message\": \"" + se.Message + "\" }");
-                return ret;
+                response = new HttpResponseMessage(System.Net.HttpStatusCode.Unauthorized);
+                response.Content = new StringContent("{ \"Message\": \"" + se.Message + "\" }");
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+                response.Content = new StringContent("{ \"Message\": \"" + ex.Message + "\" }");
+
+                return response;
             }
             finally
             {
+                // always return cors
+                response.Headers.Add("Access-Control-Allow-Origin", "*");
+                response.Headers.Add("Access-Control-Allow-Headers", "authorization,content-type");
                 SecurityContext.Current.Logoff();
             }
         }

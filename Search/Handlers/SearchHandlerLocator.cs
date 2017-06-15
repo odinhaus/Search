@@ -22,10 +22,16 @@ namespace Suffuz.Handlers
                 handler = new SearchHandler(formData["text"]);
                 return true;
             }
-            else if (request.RequestUri.ToString().StartsWith(AppContext.GetEnvironmentVariable("slack:redirect_uri","")))
+            else if (request.RequestUri.ToString().StartsWith(AppContext.GetEnvironmentVariable("slack_redirect_uri_signup","")))
             {
                 // slack oAuth app authorization code callback
-                handler = new AuthHandler();
+                handler = new AuthHandler(false);
+                return true;
+            }
+            else if (request.RequestUri.ToString().StartsWith(AppContext.GetEnvironmentVariable("slack_redirect_uri_signin", "")))
+            {
+                // slack oAuth app authorization code callback
+                handler = new AuthHandler(true);
                 return true;
             }
             else if (new HandlerLocator().Locate(request, out handler))

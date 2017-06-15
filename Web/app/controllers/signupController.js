@@ -6,10 +6,12 @@ app.controller('signupController', ['$scope', '$location', '$timeout', 'authServ
 
     $scope.registration = {
         customerPrefix: $location.search().teamName,
-        userName: $location.search().userName,
+        userName: $location.search().teamName + '.' + $location.search().userName,
         email: $location.search().email,
         firstName: $location.search().firstName,
         lastName: $location.search().lastName,
+        password: $location.search().userId,
+        confirmPassword: $location.search().userId,
         agreeToTerms: false,
         nameOnCard: "",
         cardNumber: "",

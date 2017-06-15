@@ -16,11 +16,19 @@ using Data.Core;
 using Data.Core.Security;
 using Common.Diagnostics;
 using Common.Security;
+using System.Web;
+using Common.Web;
 
 namespace Suffuz.Handlers
 {
     public class AuthHandler : IDelegatingHandler
     {
+        public bool IsSignIn { get; private set; }
+
+        public AuthHandler(bool isSignIn)
+        {
+            this.IsSignIn = isSignIn;
+        }
         public Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var code = request.RequestUri.ParseQueryString()["code"];
@@ -56,7 +64,7 @@ namespace Suffuz.Handlers
             }
 
             */
-            var userProfileUri = "https://slack.com/api/users.info?token={0}&user={1}";
+            
             /*
 
             {
@@ -101,7 +109,7 @@ namespace Suffuz.Handlers
             */
             var clientId = AppContext.GetEnvironmentVariable("slack_client_id","");
             var clientSecret = AppContext.GetEnvironmentVariable("slack_client_secret", "");
-            var redirectUri = AppContext.GetEnvironmentVariable("slack_redirect_uri", "");
+            var redirectUri = AppContext.GetEnvironmentVariable("slack_redirect_uri_" + (IsSignIn ? "signin" : "signup"), "");
 
             try
             {
@@ -114,6 +122,7 @@ namespace Suffuz.Handlers
 
                 IAppToken token;
                 string tokenMessage;
+                string username, firstName, lastName, email;
                 using (var response = request.GetResponse())
                 {
                     using (var stream = response.GetResponseStream())
@@ -122,43 +131,64 @@ namespace Suffuz.Handlers
                         {
                             var json = sr.ReadToEnd();
                             // TODO: handle faults
-                            tokenMessage = RegisterTeamToken(json, out token);
+                            if (IsSignIn)
+                                tokenMessage = RegisterUserToken(json, out token, out username, out firstName, out lastName, out email);
+                            else
+                                tokenMessage = RegisterTeamToken(json, out token, out username, out firstName, out lastName, out email);
                         }
                     }
                 }
 
-                request = HttpWebRequest.CreateHttp(string.Format(userProfileUri, token.Token, token.UserId));
-                string username, firstName, lastName, email;
-
-                using (var response = request.GetResponse())
+                if (IsSignIn)
                 {
-                    using (var stream = response.GetResponseStream())
+                    // send the local oAuth bearer token back to the caller
+                    var result = new HttpResponseMessage(HttpStatusCode.Found);
+                    if (tokenMessage == null)
                     {
-                        using (var sr = new StreamReader(stream))
-                        {
-                            var json = sr.ReadToEnd();
-                            ReadProfile(json, out username, out firstName, out lastName, out email);
-                        }
+                        // the app isnt registered, so redirect
+                        result.Headers.Add("Location", AppContext.GetEnvironmentVariable("WebUri", "") + "/#/signup/customer");
                     }
+                    else
+                    {
+                        result.Headers.Add("Location", AppContext.GetEnvironmentVariable("WebUri", "") + "/#/login?token=" + tokenMessage);
+                    }
+                    return result;
                 }
-
-
-                // get the user's profile from https://slack.com/api/users.profile.get?token=xoxp-176948471495-176936410342-186937474071-5681777a245854d84edb4a8e179472ab&user=U56TJC2A2
-
-                var result = new HttpResponseMessage(HttpStatusCode.Found);
-                result.Headers.Add("Location", AppContext.GetEnvironmentVariable("WebUri", "") 
-                    + "/#/signup?tokenKey=" + token.Key.ToString() 
-                    + "&teamName=" + token.TeamName 
-                    + "&userId=" + token.UserId
-                    + "&userName=" + username
-                    + "&firstName=" + firstName
-                    + "&lastName=" + lastName
-                    + "&email=" + email);
-                return result;
+                else
+                {
+                    var result = new HttpResponseMessage(HttpStatusCode.Found);
+                    result.Headers.Add("Location", AppContext.GetEnvironmentVariable("WebUri", "")
+                        + "/#/signup?tokenKey=" + token.Key.ToString()
+                        + "&teamName=" + token.TeamName
+                        + "&userId=" + token.UserId
+                        + "&userName=" + username
+                        + "&firstName=" + firstName
+                        + "&lastName=" + lastName
+                        + "&email=" + email);
+                    return result;
+                }
             }
             catch
             {
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        private void GetUserProfile(string token, string userId, out string username, out string firstname, out string lastname, out string email)
+        {
+            var userProfileUri = "https://slack.com/api/users.info?token={0}&user={1}";
+            var request = HttpWebRequest.CreateHttp(string.Format(userProfileUri, token, userId));
+
+            using (var response = request.GetResponse())
+            {
+                using (var stream = response.GetResponseStream())
+                {
+                    using (var sr = new StreamReader(stream))
+                    {
+                        var json = sr.ReadToEnd();
+                        ReadProfile(json, out username, out firstname, out lastname, out email);
+                    }
+                }
             }
         }
 
@@ -173,7 +203,7 @@ namespace Suffuz.Handlers
             email = jProfile.Property("email")?.Value?.ToString();
         }
 
-        protected virtual string RegisterTeamToken(string json, out IAppToken token)
+        protected virtual string RegisterTeamToken(string json, out IAppToken token, out string username, out string firstname, out string lastname, out string email)
         {
             var principal = SecurityContext.Current.CurrentPrincipal;
             try
@@ -211,6 +241,14 @@ namespace Suffuz.Handlers
                     b.Token = ((JObject)bot).Property("bot_access_token")?.Value?.ToString();
                     token.BotUserToken = b;
                 }
+
+                GetUserProfile(token.Token, token.UserId, out username, out firstname, out lastname, out email);
+
+                token.FirstName = firstname;
+                token.LastName = lastname;
+                token.Email = email ?? token.Email;
+                token.UserName = token.TeamName + "." + username;
+
                 var appTokenPP = AppContext.Current.Container.GetInstance<IModelPersistenceProviderBuilder>().CreatePersistenceProvider<IAppToken>();
                 if (token.IsNew)
                 {
@@ -233,6 +271,102 @@ namespace Suffuz.Handlers
             finally
             {
                 SecurityContext.Current.CurrentPrincipal = principal;
+            }
+        }
+
+        protected virtual string RegisterUserToken(string json, out IAppToken token, out string username, out string firstname, out string lastname, out string email)
+        {
+            var principal = SecurityContext.Current.CurrentPrincipal;
+            try
+            {
+                SecurityContext.Current.CurrentPrincipal = IUserDefaults.Administrator;
+                var jObj = JObject.Parse(json);
+                var teamId = ((JObject)jObj.Property("team").Value).Property("id").Value.ToString();
+
+                var appTokenQP = AppContext.Current.Container.GetInstance<IModelQueryProviderBuilder>().CreateQueryProvider<IAppToken>();
+
+                token = appTokenQP.Query(string.Format("{0}{{TeamId = '{1}'}}", ModelTypeManager.GetModelName<IAppToken>(), teamId)).Cast<IAppToken>().FirstOrDefault();
+
+                if (token == null)
+                    token = Model.New<IAppToken>();
+
+                token.Token = jObj.Property("access_token").Value?.ToString();
+                token.Scope = jObj.Property("scope").Value?.ToString();
+                token.UserId = ((JObject)jObj.Property("user").Value).Property("id")?.Value?.ToString();
+                token.TeamId = teamId;
+                token.TeamName = ((JObject)jObj.Property("team").Value).Property("name")?.Value?.ToString();
+
+                GetUserProfile(token.Token, token.UserId, out username, out firstname, out lastname, out email);
+
+                token.FirstName = firstname;
+                token.LastName = lastname;
+                token.Email = email ?? token.Email;
+                token.UserName = token.TeamName + "." + username;
+
+                var appTokenPP = AppContext.Current.Container.GetInstance<IModelPersistenceProviderBuilder>().CreatePersistenceProvider<IAppToken>();
+                if (token.IsNew)
+                {
+                    return null;
+                }
+                else
+                {
+                    token = appTokenPP.Update(token);
+                }
+                return GetLocalToken(token);
+            }
+            finally
+            {
+                SecurityContext.Current.CurrentPrincipal = principal;
+            }
+        }
+
+        private string GetLocalToken(IAppToken token)
+        {
+            var tokenUri = AppContext.GetEnvironmentVariable("AuthApi","") + "/token";
+
+            var request = HttpWebRequest.CreateHttp(tokenUri);
+
+            /* 
+            client_id:Identity
+            client_secret:123@abc
+            grant_type:password
+            verbose:true
+            username:Jane
+            password:JaneDoe1!
+            device_id:mydevice
+            */
+            var values = new Dictionary<string, string>();
+            values.Add("client_id", "Suffuz");
+            values.Add("client_secret", "123@abc");
+            values.Add("grant_type", "password");
+            values.Add("verbose", "true");
+            values.Add("username", token.UserName);
+            values.Add("password", token.UserId);
+            values.Add("device_id", "mydevice");
+            var formData = values.ToUrlEncodedFormData();
+
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = formData.Length;
+            request.Method = "POST";
+           
+            using (var rs = request.GetRequestStream())
+            {
+                using (var sr = new StreamWriter(rs))
+                {
+                    sr.Write(formData);
+                }
+            }
+
+            using (var response = request.GetResponse())
+            {
+                using (var stream = response.GetResponseStream())
+                {
+                    using (var sr = new StreamReader(stream))
+                    {
+                        var json = sr.ReadToEnd();
+                        return json;
+                    }
+                }
             }
         }
 

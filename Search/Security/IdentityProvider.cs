@@ -5,6 +5,7 @@ using Data.Core;
 using Data.Core.Linq;
 using Data.Core.Security;
 using Microsoft.IdentityModel.Claims;
+using Suffuz.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -106,6 +107,19 @@ namespace Search.Security
                     claimsIdentity.Claims.Add(new Claim("OrgUnit", ou.Name, ClaimValueTypes.String, AppContext.Name, AppContext.Name));
                 }
 
+                var appTokenQP = AppContext.Current.Container.GetInstance<IModelQueryProviderBuilder>().CreateQueryProvider<IAppToken>();
+                var appToken = appTokenQP.Query(string.Format("{0}{{TeamName = '{1}' & UserName = '{2}'}}", ModelTypeManager.GetModelName<IAppToken>(), customer_name, identity.Name)).Cast<IAppToken>().FirstOrDefault();
+
+                claimsIdentity.Claims.Add(new Claim(ClaimTypes.Name, appToken.FirstName, ClaimValueTypes.String, AppContext.Name, AppContext.Name));
+                claimsIdentity.Claims.Add(new Claim(ClaimTypes.Name, appToken.LastName, ClaimValueTypes.String, AppContext.Name, AppContext.Name));
+                if (appToken.Email != null)
+                    claimsIdentity.Claims.Add(new Claim(ClaimTypes.Email, appToken.Email, ClaimValueTypes.String, AppContext.Name, AppContext.Name));
+                claimsIdentity.Claims.Add(new Claim("slack:user_id", appToken.UserId, ClaimValueTypes.String, AppContext.Name, AppContext.Name));
+                claimsIdentity.Claims.Add(new Claim("slack:team_id", appToken.TeamId, ClaimValueTypes.String, AppContext.Name, AppContext.Name));
+                claimsIdentity.Claims.Add(new Claim("slack:team_name", appToken.TeamName, ClaimValueTypes.String, AppContext.Name, AppContext.Name));
+                claimsIdentity.Claims.Add(new Claim("slack:access_token", appToken.Token, ClaimValueTypes.String, AppContext.Name, AppContext.Name));
+                claimsIdentity.Claims.Add(new Claim("slack:scopes", appToken.Scope, ClaimValueTypes.String, AppContext.Name, AppContext.Name));
+
                 return claimsIdentity;
             }
             finally
@@ -182,6 +196,19 @@ namespace Search.Security
                         OriginalIssuer = AppContext.Name
                     });
                 }
+
+                var appTokenQP = AppContext.Current.Container.GetInstance<IModelQueryProviderBuilder>().CreateQueryProvider<IAppToken>();
+                var appToken = appTokenQP.Query(string.Format("{0}{{UserName = '{1}'}}", ModelTypeManager.GetModelName<IAppToken>(), identity.Name)).Cast<IAppToken>().FirstOrDefault();
+
+                claims.Add(new SerializableClaim() { Type = ClaimTypes.Name, Value = appToken.FirstName, ValueType = ClaimValueTypes.String, Issuer = AppContext.Name, OriginalIssuer = AppContext.Name });
+                claims.Add(new SerializableClaim() { Type = ClaimTypes.Name, Value = appToken.LastName, ValueType = ClaimValueTypes.String, Issuer = AppContext.Name, OriginalIssuer = AppContext.Name });
+                if (appToken.Email != null)
+                    claims.Add(new SerializableClaim() { Type = ClaimTypes.Email, Value = appToken.Email, ValueType = ClaimValueTypes.String, Issuer = AppContext.Name, OriginalIssuer = AppContext.Name });
+                claims.Add(new SerializableClaim() { Type = "slack:user_id", Value = appToken.UserId, ValueType = ClaimValueTypes.String, Issuer = AppContext.Name, OriginalIssuer = AppContext.Name });
+                claims.Add(new SerializableClaim() { Type = "slack:team_id", Value = appToken.TeamId, ValueType = ClaimValueTypes.String, Issuer = AppContext.Name, OriginalIssuer = AppContext.Name });
+                claims.Add(new SerializableClaim() { Type = "slack:team_name", Value = appToken.TeamName, ValueType = ClaimValueTypes.String, Issuer = AppContext.Name, OriginalIssuer = AppContext.Name });
+                claims.Add(new SerializableClaim() { Type = "slack:access_token", Value = appToken.Token, ValueType = ClaimValueTypes.String, Issuer = AppContext.Name, OriginalIssuer = AppContext.Name });
+                claims.Add(new SerializableClaim() { Type = "slack:scopes", Value = appToken.Scope, ValueType = ClaimValueTypes.String, Issuer = AppContext.Name, OriginalIssuer = AppContext.Name });
 
                 return claims.ToArray();
             }

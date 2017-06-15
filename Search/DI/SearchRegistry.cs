@@ -21,6 +21,7 @@ using Data.Core.Security;
 using Data.Core.Evaluation;
 using Data.Core.Auditing;
 using Search.Security;
+using Suffuz.Data;
 
 namespace Suffuz.DI
 {
@@ -47,7 +48,7 @@ namespace Suffuz.DI
                 c.For<IDataContextInitializer>().Use<DataContextInitializer>();
                 c.For<IAuditer>().Use<Auditer>();
                 c.For<IHttpAuditScopeTokenReader>().Use<HttpAuditScopeTokenReader>();
-                c.For<IOrgUnitInitializer>().Use<DefaultOrgUnitInitializer>();
+                c.For<IOrgUnitInitializer>().Use<OrgUnitInitializer>();
                 c.For<IRuleCompiler>().Use<RuleCompiler<Runtime>>();
                 c.For<IRuntimeBuilder>().Use<RuntimeBuilder>();
                 c.For<IDataAccessSecurityContextRuleProvider>().Use<DataAccessSecurityContextServerRuleProvider>();
