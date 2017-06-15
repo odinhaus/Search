@@ -364,7 +364,7 @@ namespace Suffuz.Handlers
                     using (var sr = new StreamReader(stream))
                     {
                         var json = sr.ReadToEnd();
-                        return json;
+                        return JObject.Parse(json).Property("access_token").Value.ToString();
                     }
                 }
             }
